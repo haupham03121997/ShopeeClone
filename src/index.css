@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: 'Manrope', sans-serif;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+}
+html {
+    height: 100%;
+    line-height: 1.2;
+}
+
+/* override css input password  */
+.ant-input-password .ant-input {
+    background-color: transparent !important;
+    color: white;
+}
+.ant-input-password .ant-input-suffix .ant-input-password-icon {
+    color: #333333;
+}
+.ant-input-password .ant-input-suffix .ant-input-password-icon:hover {
+    color: #333333;
+}
