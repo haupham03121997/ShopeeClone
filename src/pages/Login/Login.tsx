@@ -1,8 +1,37 @@
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd'
-import React from 'react'
 import { Link } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+
+const schema = yup
+    .object({
+        email: yup.string().required('The email field not blank!'),
+        password: yup
+            .string()
+            .required('The password field not blank')
+            .min(6, 'Password must be 8-10 characters and contain both numbers and letters.')
+    })
+    .required()
+type FormData = yup.InferType<typeof schema>
 
 const Login = () => {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<FormData>({
+        defaultValues: {
+            email: '',
+            password: ''
+        },
+        resolver: yupResolver(schema)
+    })
+
+    console.log(errors)
+    const onSubmit = (values: any) => {
+        console.log({ values })
+    }
     return (
         <Col lg={12} span={24}>
             <Row className='h-full ' align='middle' justify='center'>
@@ -13,21 +42,61 @@ const Login = () => {
                     <Form
                         layout='vertical'
                         name='basic'
-                        initialValues={{ remember: true, email: '' }}
+                        // initialValues={{ remember: true, email: '' }}
                         className=' mt-6 xl:mt-12'
                         autoComplete='off'
+                        onFinish={handleSubmit((data) => {
+                            console.log(data)
+                        })}
                     >
                         <span className=' block pb-2  text-white dark:text-@dark-10'>Email :</span>
-                        <Form.Item rules={[{ required: true, message: 'Please input your username!' }]}>
-                            <Input
+                        <Form.Item name='email'>
+                            <Controller
+                                control={control}
                                 name='email'
-                                id='error'
-                                className=' bg-transparent py-3 text-white shadow-lg dark:text-@dark-10'
+                                render={({ field }) => {
+                                    return (
+                                        <>
+                                            <Input
+                                                {...field}
+                                                name='email'
+                                                id='error'
+                                                className=' bg-transparent py-3 text-white shadow-lg dark:text-@dark-10'
+                                            />
+                                            {errors.email?.message && (
+                                                <span className='block pt-2 text-sm text-rose-500'>
+                                                    {errors.email?.message}
+                                                </span>
+                                            )}
+                                        </>
+                                    )
+                                }}
                             />
                         </Form.Item>
+
                         <span className='block pb-2  text-white dark:text-@dark-10'>Password :</span>
-                        <Form.Item rules={[{ required: true, message: 'Please input your username!' }]}>
-                            <Input.Password id='warning2' type='password' className=' bg-transparent py-3' />
+                        <Form.Item>
+                            <Controller
+                                name='password'
+                                control={control}
+                                render={({ field }) => {
+                                    return (
+                                        <>
+                                            <Input.Password
+                                                {...field}
+                                                id='warning2'
+                                                type='password'
+                                                className='bg-transparent py-3'
+                                            />
+                                            {errors.password?.message && (
+                                                <span className='block pt-2 text-sm text-rose-500'>
+                                                    {errors.password?.message}
+                                                </span>
+                                            )}
+                                        </>
+                                    )
+                                }}
+                            />
                         </Form.Item>
                         <Row align='middle' justify='space-between'>
                             <Form.Item className='mb-0'>
@@ -44,7 +113,7 @@ const Login = () => {
                             </Link>
                         </Row>
                         <Form.Item className='mt-6'>
-                            <Button className='h-full w-full py-3' type='primary' htmlType='submit'>
+                            <Button className='h-full w-full border-transparent py-3' type='primary' htmlType='submit'>
                                 Login
                             </Button>
                         </Form.Item>

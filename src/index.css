@@ -26,3 +26,13 @@ html {
 .ant-input-password .ant-input-suffix .ant-input-password-icon:hover {
     color: #333333;
 }
+
+button[disabled] {
+    background-color: #0063f7 !important;
+    border-color: transparent !important;
+    cursor: none;
+}
+
+button[disabled] > span {
+    color: white;
+}

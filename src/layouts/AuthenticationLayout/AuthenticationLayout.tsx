@@ -8,7 +8,7 @@ type Props = {
 
 const AuthenticationLayout: FC<Props> = ({ children }): JSX.Element => {
     return (
-        <Row className='h-screen w-screen bg-black '>
+        <Row style={{ minHeight: '100vh' }} className=' bg-black '>
             <LeftContent />
             {children}
         </Row>
