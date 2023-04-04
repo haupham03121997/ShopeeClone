@@ -19,6 +19,11 @@ html {
 .ant-input-password .ant-input {
     background-color: transparent !important;
     color: white;
+    border-color: #333333 !important;
+}
+.ant-input-password {
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51 / var(--tw-border-opacity));
 }
 .ant-input-password .ant-input-suffix .ant-input-password-icon {
     color: #333333;
@@ -35,4 +40,10 @@ button[disabled] {
 
 button[disabled] > span {
     color: white;
+}
+
+/* Override autofill input */
+
+input:-internal-autofill-selected {
+    background-color: transparent !important;
 }

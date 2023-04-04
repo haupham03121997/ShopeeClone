@@ -1,28 +1,24 @@
-import { Button, Col, Form, Input, Row } from 'antd'
 import { Link } from 'react-router-dom'
-
+import { Button, Col, Form, Row } from 'antd'
+import { useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { Controller, useForm } from 'react-hook-form'
+import { omit } from 'lodash'
 
-const schema = yup.object({
-    email: yup.string().required('The email field not blank!'),
-    password: yup
-        .string()
-        .required('The password field not blank')
-        .min(6, 'Password must be 8-10 characters and contain both numbers and letters.'),
-    confirmPassword: yup
-        .string()
-        .required('The confirm password field not blank')
-        .oneOf([yup.ref('password')], "Passwords don't match.")
-})
+import ControlTextInput from 'src/components/ControlTextInput'
+import { SchemaRegister, schemaRegister } from 'src/utils/rules'
+import { registerAccount } from 'src/apis/auth.api'
+import { useState } from 'react'
+import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
+import { ResponseApi } from 'src/types/utils.type'
 
-type FormData = yup.InferType<typeof schema>
+type FormData = SchemaRegister
 
 const Register = () => {
     const {
         control,
         handleSubmit,
+        setError,
         formState: { errors }
     } = useForm<FormData>({
         defaultValues: {
@@ -30,8 +26,40 @@ const Register = () => {
             password: '',
             confirmPassword: ''
         },
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schemaRegister)
     })
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const registerAccountMutate = useMutation({
+        mutationFn: (body: Omit<FormData, 'confirmPassword'>) => registerAccount(body)
+    })
+
+    const onSubmit = handleSubmit(async (data) => {
+        setIsLoading(true)
+        const body = omit(data, ['confirmPassword'])
+
+        await registerAccountMutate.mutate(body, {
+            onSuccess: (data) => {
+                console.log(data)
+            },
+            onError: (errors) => {
+                if (isAxiosErrorUnprocessableEntity<ResponseApi<Omit<FormData, 'confirmPassword'>>>(errors)) {
+                    const formError = errors.response?.data.data
+                    if (formError) {
+                        Object.keys(formError).forEach((key) => {
+                            setError(key as keyof Omit<FormData, 'confirmPassword'>, {
+                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                                type: 'Server'
+                            })
+                        })
+                    }
+                }
+            }
+        })
+        setIsLoading(false)
+    })
+
     return (
         <Col lg={12} span={24} className='p-6'>
             <Row className='h-full ' align='middle' justify='center'>
@@ -40,79 +68,31 @@ const Register = () => {
                     <p className='my-6 mb-5 text-@dark-40'>
                         Please sign up to your personal account if you want to use all our premium products.
                     </p>
-                    <Form
-                        onFinish={handleSubmit((data) => {
-                            console.log(data)
-                        })}
-                        layout='vertical'
-                        name='basic'
-                        className=' mt-6 xl:mt-12'
-                    >
+                    <Form onFinish={onSubmit} layout='vertical' name='register' className=' mt-6 xl:mt-12'>
                         <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Email :</span>
-                            <Controller
-                                control={control}
-                                name='email'
-                                render={({ field }) => (
-                                    <>
-                                        <Input
-                                            {...field}
-                                            id='error'
-                                            className='focus:border-color-@primary-2 border-@dark-80 bg-transparent py-3 text-white shadow-lg focus:shadow-@shadow-input dark:text-@dark-10'
-                                        />
-                                        {errors.email?.message && (
-                                            <span className='block pt-2 text-sm text-rose-500'>
-                                                {errors.email?.message}
-                                            </span>
-                                        )}
-                                    </>
-                                )}
-                            />
+                            <ControlTextInput name='email' errors={errors.email} label='Email :' control={control} />
                         </Form.Item>
                         <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Password :</span>
-                            <Controller
-                                control={control}
+                            <ControlTextInput
                                 name='password'
-                                render={({ field }) => (
-                                    <>
-                                        <Input
-                                            type='password'
-                                            className='border-@dark-80 bg-transparent py-3 text-white dark:text-@dark-10'
-                                        />
-                                        {errors.password?.message && (
-                                            <span className='block pt-2 text-sm text-rose-500'>
-                                                {errors.password?.message}
-                                            </span>
-                                        )}
-                                    </>
-                                )}
+                                errors={errors.password}
+                                label='Password :'
+                                control={control}
+                                type='password'
                             />
                         </Form.Item>
                         <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Confirm Password :</span>
-                            <Controller
-                                control={control}
+                            <ControlTextInput
                                 name='confirmPassword'
-                                render={({ field }) => (
-                                    <>
-                                        <Input
-                                            {...field}
-                                            type='password'
-                                            className='border-@dark-80 bg-transparent py-3 text-white dark:text-@dark-10'
-                                        />
-                                        {errors.confirmPassword?.message && (
-                                            <span className='block pt-2 text-sm text-rose-500'>
-                                                {errors.confirmPassword?.message}
-                                            </span>
-                                        )}
-                                    </>
-                                )}
+                                errors={errors.confirmPassword}
+                                label='Confirm Password :'
+                                control={control}
+                                type='password'
                             />
                         </Form.Item>
 
                         <Form.Item className='mt-6'>
-                            <Button className='h-full w-full py-3' type='primary' htmlType='submit'>
+                            <Button loading={isLoading} className='h-full w-full py-3' type='primary' htmlType='submit'>
                                 Sign up
                             </Button>
                         </Form.Item>

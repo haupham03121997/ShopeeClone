@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { useMutation } from '@tanstack/react-query'
+import { loginAccount } from 'src/apis/auth.api'
+import { useState } from 'react'
+import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
+import { ResponseApi } from 'src/types/utils.type'
 
 const schema = yup
     .object({
@@ -19,6 +24,7 @@ const Login = () => {
     const {
         control,
         handleSubmit,
+        setError,
         formState: { errors }
     } = useForm<FormData>({
         defaultValues: {
@@ -27,11 +33,35 @@ const Login = () => {
         },
         resolver: yupResolver(schema)
     })
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const loginAccountMutate = useMutation({
+        mutationFn: (body: Omit<FormData, 'confirmPassword'>) => loginAccount(body)
+    })
 
-    console.log(errors)
-    const onSubmit = (values: any) => {
-        console.log({ values })
-    }
+    const onSubmit = handleSubmit(async (data) => {
+        setIsLoading(true)
+        const body = data
+
+        await loginAccountMutate.mutate(body, {
+            onSuccess: (data) => {
+                console.log(data)
+            },
+            onError: (errors) => {
+                if (isAxiosErrorUnprocessableEntity<ResponseApi<FormData>>(errors)) {
+                    const formError = errors.response?.data.data
+                    if (formError) {
+                        Object.keys(formError).forEach((key) => {
+                            setError(key as keyof Omit<FormData, 'confirmPassword'>, {
+                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                                type: 'Server'
+                            })
+                        })
+                    }
+                }
+            }
+        })
+        setIsLoading(false)
+    })
     return (
         <Col lg={12} span={24}>
             <Row className='h-full ' align='middle' justify='center'>
@@ -41,13 +71,10 @@ const Login = () => {
 
                     <Form
                         layout='vertical'
-                        name='basic'
-                        // initialValues={{ remember: true, email: '' }}
+                        name='login'
                         className=' mt-6 xl:mt-12'
                         autoComplete='off'
-                        onFinish={handleSubmit((data) => {
-                            console.log(data)
-                        })}
+                        onFinish={onSubmit}
                     >
                         <span className=' block pb-2  text-white dark:text-@dark-10'>Email :</span>
                         <Form.Item name='email'>
@@ -113,7 +140,12 @@ const Login = () => {
                             </Link>
                         </Row>
                         <Form.Item className='mt-6'>
-                            <Button className='h-full w-full border-transparent py-3' type='primary' htmlType='submit'>
+                            <Button
+                                loading={isLoading}
+                                className='h-full w-full border-transparent py-3'
+                                type='primary'
+                                htmlType='submit'
+                            >
                                 Login
                             </Button>
                         </Form.Item>

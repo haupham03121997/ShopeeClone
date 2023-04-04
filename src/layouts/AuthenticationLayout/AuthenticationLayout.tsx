@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd'
+import { Row } from 'antd'
 import React, { FC } from 'react'
 import LeftContent from './LeftContent'
 
