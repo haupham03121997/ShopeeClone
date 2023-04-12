@@ -1,13 +1,14 @@
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useMutation } from '@tanstack/react-query'
 import { loginAccount } from 'src/apis/auth.api'
-import { useState } from 'react'
 import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
-import { ResponseApi } from 'src/types/utils.type'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import useAppContext from 'src/hooks/useAppContext'
+import { PATH } from 'src/constants/path'
 
 const schema = yup
     .object({
@@ -21,6 +22,8 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>
 
 const Login = () => {
+    const navigate = useNavigate()
+    const { setIsAuthenticated, setCurrentUser } = useAppContext()
     const {
         control,
         handleSubmit,
@@ -33,21 +36,22 @@ const Login = () => {
         },
         resolver: yupResolver(schema)
     })
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const loginAccountMutate = useMutation({
         mutationFn: (body: Omit<FormData, 'confirmPassword'>) => loginAccount(body)
     })
 
     const onSubmit = handleSubmit(async (data) => {
-        setIsLoading(true)
         const body = data
 
         await loginAccountMutate.mutate(body, {
             onSuccess: (data) => {
-                console.log(data)
+                setIsAuthenticated(true)
+                navigate(PATH.HOME)
+                setCurrentUser(data.data.data.user)
             },
             onError: (errors) => {
-                if (isAxiosErrorUnprocessableEntity<ResponseApi<FormData>>(errors)) {
+                if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<FormData>>(errors)) {
                     const formError = errors.response?.data.data
                     if (formError) {
                         Object.keys(formError).forEach((key) => {
@@ -60,7 +64,6 @@ const Login = () => {
                 }
             }
         })
-        setIsLoading(false)
     })
     return (
         <Col lg={12} span={24}>
@@ -141,7 +144,8 @@ const Login = () => {
                         </Row>
                         <Form.Item className='mt-6'>
                             <Button
-                                loading={isLoading}
+                                loading={loginAccountMutate.isLoading}
+                                disabled={loginAccountMutate.isLoading}
                                 className='h-full w-full border-transparent py-3'
                                 type='primary'
                                 htmlType='submit'

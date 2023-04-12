@@ -26,5 +26,8 @@ export default defineConfig({
             // '@': resolve(__dirname, './src'),
             // 'tailwind.config.cjs': path.resolve(__dirname, 'tailwind.config.cjs')
         }
+    },
+    define: {
+        'process.env': process.env ?? {}
     }
 })
