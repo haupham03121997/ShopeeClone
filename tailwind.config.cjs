@@ -36,8 +36,16 @@ module.exports = {
                 '@secondary-3': '#f7c2ff',
                 '@secondary-4': '#fdeffc',
 
+                // Danger
+                '@danger-1': '#ff0022',
+                '@danger-2': '#ff455e',
+                '@danger-3': '#ff8b9a',
+                '@danger-4': '#ffe7ea',
                 // Box shadow
-                '@shadow-input': '0px 0px 10px rgba(10, 175, 255, 0.35);'
+                '@shadow-input': '0px 0px 10px rgba(10, 175, 255, 0.35);',
+
+                // Border
+                '@border-dark': "#dfe6e9"
             }
         }
     },

@@ -1,8 +1,70 @@
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { useMutation } from '@tanstack/react-query'
+import { loginAccount } from 'src/apis/auth.api'
+import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import useAppContext from 'src/hooks/useAppContext'
+import { PATH } from 'src/constants/path'
+
+const schema = yup
+    .object({
+        email: yup.string().required('The email field not blank!'),
+        password: yup
+            .string()
+            .required('The password field not blank')
+            .min(6, 'Password must be 8-10 characters and contain both numbers and letters.')
+    })
+    .required()
+type FormData = yup.InferType<typeof schema>
 
 const Login = () => {
+    const navigate = useNavigate()
+    const { setIsAuthenticated, setCurrentUser } = useAppContext()
+    const {
+        control,
+        handleSubmit,
+        setError,
+        formState: { errors }
+    } = useForm<FormData>({
+        defaultValues: {
+            email: '',
+            password: ''
+        },
+        resolver: yupResolver(schema)
+    })
+
+    const loginAccountMutate = useMutation({
+        mutationFn: (body: Omit<FormData, 'confirmPassword'>) => loginAccount(body)
+    })
+
+    const onSubmit = handleSubmit(async (data) => {
+        const body = data
+
+        await loginAccountMutate.mutate(body, {
+            onSuccess: (data) => {
+                setIsAuthenticated(true)
+                navigate(PATH.HOME)
+                setCurrentUser(data.data.data.user)
+            },
+            onError: (errors) => {
+                if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<FormData>>(errors)) {
+                    const formError = errors.response?.data.data
+                    if (formError) {
+                        Object.keys(formError).forEach((key) => {
+                            setError(key as keyof Omit<FormData, 'confirmPassword'>, {
+                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                                type: 'Server'
+                            })
+                        })
+                    }
+                }
+            }
+        })
+    })
     return (
         <Col lg={12} span={24}>
             <Row className='h-full ' align='middle' justify='center'>
@@ -12,22 +74,59 @@ const Login = () => {
 
                     <Form
                         layout='vertical'
-                        name='basic'
-                        initialValues={{ remember: true, email: '' }}
+                        name='login'
                         className=' mt-6 xl:mt-12'
                         autoComplete='off'
+                        onFinish={onSubmit}
                     >
                         <span className=' block pb-2  text-white dark:text-@dark-10'>Email :</span>
-                        <Form.Item rules={[{ required: true, message: 'Please input your username!' }]}>
-                            <Input
+                        <Form.Item name='email'>
+                            <Controller
+                                control={control}
                                 name='email'
-                                id='error'
-                                className=' bg-transparent py-3 text-white shadow-lg dark:text-@dark-10'
+                                render={({ field }) => {
+                                    return (
+                                        <>
+                                            <Input
+                                                {...field}
+                                                name='email'
+                                                id='error'
+                                                className=' bg-transparent py-3 text-white shadow-lg dark:text-@dark-10'
+                                            />
+                                            {errors.email?.message && (
+                                                <span className='block pt-2 text-sm text-rose-500'>
+                                                    {errors.email?.message}
+                                                </span>
+                                            )}
+                                        </>
+                                    )
+                                }}
                             />
                         </Form.Item>
+
                         <span className='block pb-2  text-white dark:text-@dark-10'>Password :</span>
-                        <Form.Item rules={[{ required: true, message: 'Please input your username!' }]}>
-                            <Input.Password id='warning2' type='password' className=' bg-transparent py-3' />
+                        <Form.Item>
+                            <Controller
+                                name='password'
+                                control={control}
+                                render={({ field }) => {
+                                    return (
+                                        <>
+                                            <Input.Password
+                                                {...field}
+                                                id='warning2'
+                                                type='password'
+                                                className='bg-transparent py-3'
+                                            />
+                                            {errors.password?.message && (
+                                                <span className='block pt-2 text-sm text-rose-500'>
+                                                    {errors.password?.message}
+                                                </span>
+                                            )}
+                                        </>
+                                    )
+                                }}
+                            />
                         </Form.Item>
                         <Row align='middle' justify='space-between'>
                             <Form.Item className='mb-0'>
@@ -44,7 +143,13 @@ const Login = () => {
                             </Link>
                         </Row>
                         <Form.Item className='mt-6'>
-                            <Button className='h-full w-full py-3' type='primary' htmlType='submit'>
+                            <Button
+                                loading={loginAccountMutate.isLoading}
+                                disabled={loginAccountMutate.isLoading}
+                                className='h-full w-full border-transparent py-3'
+                                type='primary'
+                                htmlType='submit'
+                            >
                                 Login
                             </Button>
                         </Form.Item>

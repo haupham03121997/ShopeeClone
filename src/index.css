@@ -19,10 +19,81 @@ html {
 .ant-input-password .ant-input {
     background-color: transparent !important;
     color: white;
+    border-color: #333333 !important;
+}
+.ant-input-password {
+    --tw-border-opacity: 1;
+    border-color: rgb(51 51 51 / var(--tw-border-opacity));
 }
 .ant-input-password .ant-input-suffix .ant-input-password-icon {
     color: #333333;
 }
 .ant-input-password .ant-input-suffix .ant-input-password-icon:hover {
     color: #333333;
+}
+body.dark .ant-input-affix-wrapper {
+    border-color: #333333;
+    background: #141414;
+    color: #f0f0f0;
+    padding: 0 8px;
+}
+body.dark .ant-input {
+    background: #141414;
+    padding: 8px;
+    color: #f0f0f0;
+}
+
+body.dark .ant-input-number {
+    border-color: #333333;
+    background: #141414;
+    color: #f0f0f0;
+}
+
+body.dark .ant-input-number .ant-input-number-input {
+    color: #f0f0f0 !important;
+}
+
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+    outline: 0;
+    box-shadow: 0px 0px 10px rgba(10, 175, 255, 0.35) !important;
+}
+
+button[disabled] {
+    background-color: #0063f7 !important;
+    border-color: transparent !important;
+    cursor: none;
+}
+
+button[disabled] > span {
+    color: white;
+}
+body.dark .btn-icon:hover,
+.btn-icon:focus,
+.btn-icon:not(:disabled):hover {
+    background: #292929;
+}
+body.dark .ant-btn-text {
+    color: #0010f7;
+}
+body.dark .ant-btn-text:hover {
+    color: #0010f7;
+}
+
+.ant-input-number-handler-wrap {
+    display: none !important;
+}
+
+body.dark ::placeholder {
+    color: white !important;
+}
+/* Override autofill input */
+
+input:-internal-autofill-selected {
+    background-color: transparent !important;
+}
+
+/* Sider bar */
+.ant-layout .ant-layout-sider {
+    background: #141414;
 }

@@ -5,12 +5,12 @@ import bgDark from '../../assets/images/pages/authentication/authentication-bg-d
 
 export default function LeftContent() {
     return (
-        <Col lg={12} span={24} className='w-100  h-full dark:bg-color-dark'>
+        <Col lg={12} span={24} className='w-100  dark:bg-color-dark'>
             <Row className='relative h-full'>
                 <Col span={24}>
                     <Row align='middle' justify='center' className='pt-20'>
                         <Col xl={20} span={24} className='mb-2 text-center'>
-                            <img src={bgDark} alt='bg-images' />
+                            <img src={bgDark} className='w-100' alt='bg-images' />
                         </Col>
                     </Row>
                 </Col>

@@ -1,7 +1,71 @@
-import { Button, Col, Form, Input, Row } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Button, Col, Form, Row } from 'antd'
+import { useForm } from 'react-hook-form'
+import { useMutation } from '@tanstack/react-query'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
 
-const Register = () => {
+import ControlTextInput from 'src/components/ControlTextInput'
+import { SchemaRegister, schemaRegister } from 'src/utils/rules'
+import { registerAccount } from 'src/apis/auth.api'
+import { FC, useState } from 'react'
+import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
+import { ErrorResponseApi } from 'src/types/utils.type'
+import useAppContext from 'src/hooks/useAppContext'
+import { PATH } from 'src/constants/path'
+
+type FormData = SchemaRegister
+
+const Register: FC = (): JSX.Element => {
+    const navigate = useNavigate()
+    const { setIsAuthenticated, setCurrentUser } = useAppContext()
+    const {
+        control,
+        handleSubmit,
+        setError,
+        formState: { errors }
+    } = useForm<FormData>({
+        defaultValues: {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        },
+        resolver: yupResolver(schemaRegister)
+    })
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const registerAccountMutate = useMutation({
+        mutationFn: (body: Omit<FormData, 'confirmPassword'>) => registerAccount(body)
+    })
+
+    const onSubmit = handleSubmit(async (data) => {
+        setIsLoading(true)
+        const body = omit(data, ['confirmPassword'])
+
+        await registerAccountMutate.mutate(body, {
+            onSuccess: (data) => {
+                setIsAuthenticated(true)
+                setCurrentUser(data.data.data.user)
+                navigate(PATH.HOME)
+            },
+            onError: (errors) => {
+                if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<Omit<FormData, 'confirmPassword'>>>(errors)) {
+                    const formError = errors.response?.data.data
+                    if (formError) {
+                        Object.keys(formError).forEach((key) => {
+                            setError(key as keyof Omit<FormData, 'confirmPassword'>, {
+                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                                type: 'Server'
+                            })
+                        })
+                    }
+                }
+            }
+        })
+        setIsLoading(false)
+    })
+
     return (
         <Col lg={12} span={24} className='p-6'>
             <Row className='h-full ' align='middle' justify='center'>
@@ -10,33 +74,31 @@ const Register = () => {
                     <p className='my-6 mb-5 text-@dark-40'>
                         Please sign up to your personal account if you want to use all our premium products.
                     </p>
-                    <Form layout='vertical' name='basic' initialValues={{ remember: true }} className=' mt-6 xl:mt-12'>
+                    <Form onFinish={onSubmit} layout='vertical' name='register' className=' mt-6 xl:mt-12'>
                         <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Email :</span>
-                            <Input
-                                id='error'
-                                className='focus:border-color-@primary-2 border-@dark-80 bg-transparent py-3 text-white shadow-lg focus:shadow-@shadow-input dark:text-@dark-10'
+                            <ControlTextInput name='email' errors={errors.email} label='Email :' control={control} />
+                        </Form.Item>
+                        <Form.Item>
+                            <ControlTextInput
+                                name='password'
+                                errors={errors.password}
+                                label='Password :'
+                                control={control}
+                                type='password'
                             />
                         </Form.Item>
                         <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Password :</span>
-                            <Input
-                                id='warning2'
+                            <ControlTextInput
+                                name='confirmPassword'
+                                errors={errors.confirmPassword}
+                                label='Confirm Password :'
+                                control={control}
                                 type='password'
-                                className='border-@dark-80 bg-transparent py-3 text-white dark:text-@dark-10'
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <span className='block pb-2  text-white dark:text-@dark-10'>Confirm Password :</span>
-                            <Input
-                                id='warning2'
-                                type='password'
-                                className='border-@dark-80 bg-transparent py-3 text-white dark:text-@dark-10'
                             />
                         </Form.Item>
 
                         <Form.Item className='mt-6'>
-                            <Button className='h-full w-full py-3' type='primary' htmlType='submit'>
+                            <Button loading={isLoading} className='h-full w-full py-3' type='primary' htmlType='submit'>
                                 Sign up
                             </Button>
                         </Form.Item>

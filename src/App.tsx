@@ -1,4 +1,5 @@
 import { ConfigProvider } from 'antd'
+import { Toaster } from 'react-hot-toast'
 import useRouteElement from './useRouteElement'
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
             }}
         >
             {useRouteElement()}
+            <Toaster />
         </ConfigProvider>
     )
 }
