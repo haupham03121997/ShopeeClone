@@ -12,9 +12,9 @@ const MainLayout: FC<Props> = ({ children }) => {
     return (
         <Layout className='min-h-screen w-screen  bg-@dark-90'>
             <Sidebar />
-            <Layout className='bg-@dark-90'>
+            <Layout className='h-screen overflow-auto bg-@dark-90'>
                 <Header />
-                <div className='mx-8 mt-6'>{children}</div>
+                <div className='mx-8 mt-6 '>{children}</div>
             </Layout>
         </Layout>
     )

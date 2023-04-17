@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance, HttpStatusCode } from 'axios'
 import { toast } from 'react-hot-toast'
 import { AuthResponse } from 'src/types/auth.type'
-import { removeAccessTokenFromToLS, setAccessTokenToLS, getAccessTokenToLS } from './auth'
+import { removeCurrentUser, setAccessTokenToLS, getAccessTokenToLS } from './auth'
 class Http {
     instance: AxiosInstance
     private accessToken: string
@@ -34,7 +34,7 @@ class Http {
                     setAccessTokenToLS(this.accessToken)
                 } else if (response.config.url === '/logout') {
                     this.accessToken = ''
-                    removeAccessTokenFromToLS()
+                    removeCurrentUser()
                 }
 
                 return response

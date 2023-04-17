@@ -45,9 +45,9 @@ module.exports = {
                 '@shadow-input': '0px 0px 10px rgba(10, 175, 255, 0.35);',
 
                 // Border
-                '@border-dark': "#dfe6e9"
+                '@border-dark': '#dfe6e9'
             }
         }
     },
-    plugins: []
+    plugins: [require('@tailwindcss/line-clamp')]
 }

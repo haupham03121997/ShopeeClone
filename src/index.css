@@ -8,6 +8,7 @@
     font-size: 14px;
     font-weight: 400;
     padding: 0;
+    letter-spacing: 0.05rem;
     margin: 0;
 }
 html {
@@ -96,4 +97,34 @@ input:-internal-autofill-selected {
 /* Sider bar */
 .ant-layout .ant-layout-sider {
     background: #141414;
+}
+/* Select  */
+body.dark .ant-select-selector {
+    background: transparent !important;
+    border-color: #333333 !important;
+}
+
+body.dark .ant-select-selection-item {
+    color: white;
+}
+
+body.dark .ant-select-selection-placeholder {
+    color: white;
+}
+
+body.dark .ant-slider-rail {
+    background: #333333;
+}
+body.dark .ant-slider:hover .ant-slider-rail {
+    background: #2b2b2b;
+}
+.ant-card .ant-card-body {
+    padding: 0;
+}
+body.dark .ant-pagination .ant-pagination-item a {
+    color: #d7d7d7;
+}
+
+body.dark .ant-pagination .ant-pagination-item-active a {
+    color: #0010f7;
 }
