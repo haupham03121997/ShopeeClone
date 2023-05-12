@@ -1,6 +1,5 @@
-import { Layout } from 'antd'
+import { Button, Layout } from 'antd'
 import React, { FC } from 'react'
-import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
 import Sidebar from 'src/components/Sidebar'
 

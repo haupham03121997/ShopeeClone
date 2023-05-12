@@ -35,7 +35,7 @@ const Sidebar = () => {
                     <AsideFilter />
                 </Row>
                 <Row>
-                    <Link to={PATH.LOGIN}>
+                    <Link to={PATH.LOGIN} className='w-full'>
                         <Button size='large' className='w-full py-5' type='primary'>
                             Sign in
                         </Button>

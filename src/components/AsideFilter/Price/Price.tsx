@@ -21,7 +21,7 @@ const Price = (): JSX.Element => {
                 <div>
                     <div className='flex items-center'>
                         <Wallet set='curved' size={20} primaryColor='#6b7280' />
-                        <span className='inline-block pl-2 text-lg font-semibold tracking-wide text-gray-500'>
+                        <span className='inline-block pl-2 text-base font-normal tracking-wide text-gray-500'>
                             {translate('Price')}
                         </span>
                     </div>

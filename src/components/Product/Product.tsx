@@ -2,6 +2,7 @@ import { Card, Carousel, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 import { Star, Buy } from 'react-iconly'
 import { Product as ProductType } from 'src/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle } from 'src/utils/utils'
 
 interface Props {
     product: ProductType
@@ -34,16 +35,20 @@ const Product: FC<Props> = ({ product }): JSX.Element => {
             <div className='flex flex-col gap-4 py-4 px-4 text-gray-300'>
                 <Typography className='text-base font-medium text-gray-300 line-clamp-2'>{product.name}</Typography>
                 <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-1'>
                         <Star size={14} set='bold' primaryColor='#fadb14' />
                         <span className='text-gray-4 text-sm font-medium'>({product.rating})</span>
                     </div>
-                    <span className='text-sm font-medium dark:text-gray-600'>51.k Đã bán</span>
+                    <span className='text-sm font-medium dark:text-gray-600'>
+                        {formatNumberToSocialStyle(product.sold)} Đã bán
+                    </span>
                 </div>
                 <div className='flex items-center justify-between'>
                     <div className='flex  items-center gap-2'>
-                        <span className='text-sm text-gray-600 line-through'>$200</span>
-                        <span className='font-semibold text-@primary-2'>$199</span>
+                        <span className='text-sm text-gray-600 line-through'>
+                            {formatCurrency(product.price_before_discount)}
+                        </span>
+                        <span className='font-semibold text-@primary-2'>{formatCurrency(product.price)}</span>
                     </div>
                     <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-md bg-@primary-1 transition-all duration-300 hover:bg-@primary-2'>
                         <Buy set='curved' size={18} primaryColor='#b2bec3' />

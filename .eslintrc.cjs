@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-
 module.exports = {
     extends: [
-        // Chúng ta sẽ dùng các rule mặc định từ các plugin mà chúng ta đã cài.
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
@@ -11,10 +9,9 @@ module.exports = {
         'plugin:import/typescript',
         'plugin:jsx-a11y/recommended',
         'plugin:@typescript-eslint/recommended',
-        // Disable các rule mà eslint xung đột với prettier.
-        // Để cái này ở dưới để nó override các rule phía trên!.
         'eslint-config-prettier',
-        'prettier'
+        'prettier',
+        'plugin:storybook/recommended'
     ],
     plugins: ['prettier'],
     settings: {
