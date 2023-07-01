@@ -5,11 +5,12 @@ import React, { FC } from 'react'
 interface Props {
     value: string
     text: string
-    defaultValue: string
+    defaultValue?: string
+    isActive?: boolean
     handleClick?: () => void
 }
 
-const SortProductItem: FC<Props> = ({ text, handleClick, value, defaultValue }): JSX.Element => {
+const SortProductItem: FC<Props> = ({ text, handleClick, value, defaultValue, isActive }): JSX.Element => {
     return (
         <Col className='flex items-center justify-center'>
             <Button
@@ -17,8 +18,8 @@ const SortProductItem: FC<Props> = ({ text, handleClick, value, defaultValue }):
                 type='primary'
                 size='large'
                 className={classNames('border border-@dark-80 py-2', {
-                    'bg-transparent': value !== defaultValue,
-                    'bg-@primary-1': value === defaultValue
+                    'bg-transparent': !isActive,
+                    'bg-@primary-1': isActive
                 })}
             >
                 {text}

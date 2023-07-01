@@ -22,3 +22,7 @@ export function formatNumberToSocialStyle(value: number) {
         .replace('.', ',')
         .toLowerCase()
 }
+
+export function isExitsKeyParamsUrl(key: string, searchParams: object) {
+    return key in searchParams
+}

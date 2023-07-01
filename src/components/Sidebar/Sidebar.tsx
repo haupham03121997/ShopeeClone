@@ -29,7 +29,9 @@ const Sidebar = () => {
                         />
                     </svg> */}
 
-                    <span className='mx-2 text-xl font-semibold text-gray-50'>{`Shop's Pe`}</span>
+                    <Link to={PATH.HOME}>
+                        <span className='mx-2 text-xl font-semibold text-gray-50'>{`Shop's Pe`}</span>
+                    </Link>
                 </Row>
                 <Row className='flex-1'>
                     <AsideFilter />

@@ -1,8 +1,11 @@
-import React from 'react'
-import { Button as ButtonAntd } from 'antd'
+import { Button as ButtonAntd, ButtonProps } from 'antd'
 
-function Button() {
-    return <ButtonAntd>Button</ButtonAntd>
+interface Props extends ButtonProps {
+    label?: string
+}
+function Button(props: Props) {
+    const { label, ...restProps } = props
+    return <ButtonAntd {...restProps}>Button</ButtonAntd>
 }
 
 export default Button

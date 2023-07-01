@@ -1,34 +1,50 @@
 import { Col, Row, Select } from 'antd'
-import { useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { ChevronDown } from 'react-iconly'
-import { SORT_PRODUCT } from 'src/constants/sort'
+import { omit } from 'lodash'
+import { PRICE, SORT_PRODUCT } from 'src/constants/sort'
 import SortProductItem from './SortProductItem'
+import { QueryConfig } from 'src/pages/ProductList/ProductList'
+import { ProductListConfig } from 'src/types/product.type'
+import { useSearchParams } from 'react-router-dom'
 
-const SortProductList = (): JSX.Element => {
-    const [value, setValue] = useState<string>(SORT_PRODUCT.ALL)
+interface Props {
+    queryConfig: QueryConfig
+}
 
-    const onSelectSort = (value: string) => {
+const SortProductList: FC<Props> = ({ queryConfig }): JSX.Element => {
+    const { sort_by, order } = queryConfig
+
+    const [, setSearchParams] = useSearchParams({ ...queryConfig })
+    const [value, setValue] = useState<string>(SORT_PRODUCT.CREATED_AT)
+
+    const onSelectSort = (value: Exclude<ProductListConfig['sort_by'], undefined>) => {
         setValue(value)
+        setSearchParams(omit({ ...queryConfig, sort_by: value }, ['order']))
     }
+
+    useEffect(() => {
+        setValue(sort_by || SORT_PRODUCT.CREATED_AT)
+    }, [queryConfig])
 
     const items = [
         {
-            key: SORT_PRODUCT.ALL,
-            text: 'All product'
-        },
-        {
-            key: SORT_PRODUCT.POPULAR,
-            text: 'Popular'
-        },
-        {
-            key: SORT_PRODUCT.LATEST,
+            key: SORT_PRODUCT.CREATED_AT,
             text: 'Latest'
         },
         {
-            key: SORT_PRODUCT.BEST_SELLING,
+            key: SORT_PRODUCT.VIEW,
+            text: 'Popular'
+        },
+        {
+            key: SORT_PRODUCT.SOLD,
             text: 'Best Selling'
         }
     ]
+
+    const handlePriceOrder = (value: Exclude<ProductListConfig['order'], undefined>) => {
+        setSearchParams({ ...queryConfig, order: value })
+    }
 
     return (
         <Row gutter={[12, 24]} justify='space-between' className='mx-0 mt-4'>
@@ -41,7 +57,7 @@ const SortProductList = (): JSX.Element => {
                                     value={value}
                                     text={item.text}
                                     key={item.key}
-                                    defaultValue={item.key}
+                                    isActive={value === item.key}
                                     handleClick={() => onSelectSort(item.key)}
                                 />
                             ))}
@@ -55,12 +71,16 @@ const SortProductList = (): JSX.Element => {
                                 placeholder='Choose price'
                                 className='border border-@dark-80  py-2'
                                 style={{ width: 160 }}
+                                onChange={handlePriceOrder}
+                                value={(order as any) || 'desc'}
                                 options={[
                                     {
-                                        value: 'Price hight to low'
+                                        value: PRICE.DESC,
+                                        label: 'Price hight to low'
                                     },
                                     {
-                                        value: 'Price low to hight'
+                                        value: PRICE.ASC,
+                                        label: 'Price low to hight'
                                     }
                                 ]}
                                 suffixIcon={<ChevronDown set='bold' size={18} primaryColor='white' />}

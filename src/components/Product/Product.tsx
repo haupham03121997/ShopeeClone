@@ -46,9 +46,9 @@ const Product: FC<Props> = ({ product }): JSX.Element => {
                 <div className='flex items-center justify-between'>
                     <div className='flex  items-center gap-2'>
                         <span className='text-sm text-gray-600 line-through'>
-                            {formatCurrency(product.price_before_discount)}
+                            {formatCurrency(product.price_before_discount) + 'đ'}
                         </span>
-                        <span className='font-semibold text-@primary-2'>{formatCurrency(product.price)}</span>
+                        <span className='font-semibold text-@primary-2'>{formatCurrency(product.price) + 'đ'}</span>
                     </div>
                     <div className='flex h-[35px] w-[35px] cursor-pointer items-center justify-center rounded-md bg-@primary-1 transition-all duration-300 hover:bg-@primary-2'>
                         <Buy set='curved' size={18} primaryColor='#b2bec3' />

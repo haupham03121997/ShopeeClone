@@ -128,3 +128,8 @@ body.dark .ant-pagination .ant-pagination-item a {
 body.dark .ant-pagination .ant-pagination-item-active a {
     color: #0010f7;
 }
+
+body.dark .ant-pagination .ant-pagination-item-link .anticon.anticon-left,
+.anticon-right {
+    color: white;
+}

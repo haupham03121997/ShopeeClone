@@ -1,5 +1,5 @@
-import { Button, Layout } from 'antd'
-import React, { FC } from 'react'
+import { Layout } from 'antd'
+import React, { FC, memo } from 'react'
 import Header from 'src/components/Header'
 import Sidebar from 'src/components/Sidebar'
 
@@ -7,7 +7,8 @@ interface Props {
     children: React.ReactNode
 }
 
-const MainLayout: FC<Props> = ({ children }) => {
+const MainLayoutInner: FC<Props> = ({ children }) => {
+    console.log('Rerender MainLayoutInner')
     return (
         <Layout className='min-h-screen w-screen  bg-@dark-90'>
             <Sidebar />
@@ -19,4 +20,5 @@ const MainLayout: FC<Props> = ({ children }) => {
     )
 }
 
+const MainLayout = memo(MainLayoutInner)
 export default MainLayout

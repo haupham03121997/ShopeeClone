@@ -1,6 +1,11 @@
 export enum SORT_PRODUCT {
-    ALL = 'ALL',
-    POPULAR = 'POPULAR',
-    LATEST = 'LATEST',
-    BEST_SELLING = 'BEST_SELLING'
+    VIEW = 'view',
+    CREATED_AT = 'createdAt',
+    SOLD = 'sold',
+    PRICE = 'price'
+}
+
+export enum PRICE {
+    ASC = 'asc',
+    DESC = 'desc'
 }
