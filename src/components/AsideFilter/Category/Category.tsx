@@ -4,10 +4,10 @@ import { Category as CategoryIcon, CloseSquare } from 'react-iconly'
 import categoryApis from 'src/apis/category.api'
 import classnames from 'classnames'
 import useQueryParams from 'src/hooks/useQueryParams'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
 import { PATH } from 'src/constants/path'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 const Category = (): JSX.Element => {
     const navigate = useNavigate()

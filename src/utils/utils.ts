@@ -26,3 +26,16 @@ export function formatNumberToSocialStyle(value: number) {
 export function isExitsKeyParamsUrl(key: string, searchParams: object) {
     return key in searchParams
 }
+export function removeSpecialCharacter(str: string) {
+    // eslint-disable-next-line no-useless-escape
+    return str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+}
+
+export function generateNameId({ name, id }: { name: string; id: string }) {
+    removeSpecialCharacter(name).replace(/\s/g, '-') + `-i.${id}`
+}
+
+function getIdFromNameId(nameId: string) {
+    const arr = nameId.split('-i.')
+    return arr[arr.length - 1]
+}

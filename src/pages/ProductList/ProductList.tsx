@@ -1,5 +1,4 @@
-import { useMemo, useState } from 'react'
-import { isUndefined, omitBy } from 'lodash'
+import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { Col, Row, Pagination } from 'antd'
@@ -7,38 +6,19 @@ import { Col, Row, Pagination } from 'antd'
 import Product from 'src/components/Product'
 import SortProductList from 'src/components/SortProductList'
 import { productApi } from 'src/apis/product.api'
-import useQueryParams from 'src/hooks/useQueryParams'
 import { ProductListConfig } from 'src/types/product.type'
 import { PAGINATION_DEFAULT } from 'src/constants/pagination'
-import { SORT_PRODUCT } from 'src/constants/sort'
 import { SkeletonProductList } from 'src/components/Skeletons'
-
-export type QueryConfig = {
-    [key in keyof ProductListConfig]: string
-}
+import useQueryConfig from 'src/hooks/useQueryConfig'
 
 const ProductList = (): JSX.Element => {
     const [_, setSearchParams] = useSearchParams({})
-    const queryParams: QueryConfig = useQueryParams()
-
-    const queryConfig: QueryConfig = omitBy(
-        {
-            page: queryParams.page || PAGINATION_DEFAULT.CURRENT_PAGE,
-            limit: queryParams.limit || PAGINATION_DEFAULT.LIMIT,
-            sort_by: queryParams.sort_by || SORT_PRODUCT.CREATED_AT,
-            order: queryParams.order || 'desc',
-            exclude: queryParams.exclude,
-            rating_filter: queryParams.rating_filter,
-            price_max: queryParams.price_max,
-            price_min: queryParams.price_min,
-            category: queryParams.category
-        },
-        isUndefined
-    )
+    const { queryConfig } = useQueryConfig()
 
     const { data, isLoading } = useQuery({
         queryKey: ['products', queryConfig],
-        queryFn: () => productApi.getProductList(queryConfig as ProductListConfig)
+        queryFn: () => productApi.getProductList(queryConfig as ProductListConfig),
+        staleTime: 3 * 60 * 1000
     })
 
     const totalItems = useMemo(

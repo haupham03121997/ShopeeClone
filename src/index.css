@@ -133,3 +133,44 @@ body.dark .ant-pagination .ant-pagination-item-link .anticon.anticon-left,
 .anticon-right {
     color: white;
 }
+
+/* SLICK OTHER  */
+
+.slick-other {
+    position: relative;
+    padding-top: 60px;
+}
+.slick-other .next-slick {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slick-other .next-slick svg {
+    fill: white;
+}
+.slick-other .next-slick:hover svg {
+    fill: #293eff;
+}
+.slick-other .prev-slick svg {
+    fill: white;
+}
+
+.slick-other .prev-slick:hover svg {
+    fill: #293eff;
+}
+.slick-other .prev-slick {
+    position: absolute;
+    right: 40px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slick-other-original,
+.slick-other {
+    margin: 0 -12px;
+}

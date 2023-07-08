@@ -9,6 +9,9 @@ import { RiCheckboxCircleLine, RiShieldLine, RiShoppingBagLine, RiTimeLine, RiTr
 import { productApi } from 'src/apis/product.api'
 import { formatCurrency } from 'src/utils/utils'
 import { useEffect, useState } from 'react'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { ProductListConfig } from 'src/types/product.type'
+import ProductListLatest from 'src/components/ProductListLatest'
 
 const ProductDetail = (): JSX.Element => {
     const { id } = useParams()
@@ -19,6 +22,14 @@ const ProductDetail = (): JSX.Element => {
         queryKey: ['product', id],
         queryFn: () => productApi.getProductDetail(id as string)
     })
+    const product = data?.data.data
+    const queryConfig: ProductListConfig = { page: '1', limit: '20', category: product?.category._id }
+    const { data: productRelated } = useQuery({
+        queryKey: ['products', queryConfig],
+        queryFn: () => productApi.getProductList(queryConfig),
+        enabled: !!product,
+        staleTime: 3 * 60 * 1000
+    })
 
     let slider1: any = []
     let slider2: any = []
@@ -28,11 +39,7 @@ const ProductDetail = (): JSX.Element => {
         setNav2(slider2)
     }, [slider1, slider2])
 
-    const product = data?.data.data
-
     const images = product?.images || []
-
-    console.log({ nav1, nav2 })
 
     return (
         <Row gutter={[24, 24]}>
@@ -59,8 +66,11 @@ const ProductDetail = (): JSX.Element => {
                                     arrows={false}
                                     ref={(slider) => (slider1 = slider)}
                                 >
-                                    {images.map((item) => (
-                                        <div className='flex items-center justify-center overflow-hidden  border-2'>
+                                    {images.map((item, index) => (
+                                        <div
+                                            key={`image-nav2-${index}`}
+                                            className='flex items-center justify-center overflow-hidden  border-2'
+                                        >
                                             <img
                                                 src={item}
                                                 width={'100%'}
@@ -89,21 +99,22 @@ const ProductDetail = (): JSX.Element => {
                                         }
                                     ]}
                                 >
-                                    {images.map((item) => {
-                                        return (
-                                            <>
-                                                <div className='mx-2 cursor-pointer overflow-hidden rounded-md border border-solid border-gray-500'>
-                                                    <img src={item} height={80} width={'100%'} />
-                                                </div>
-                                            </>
-                                        )
-                                    })}
+                                    {images.map((item, index) => (
+                                        <>
+                                            <div
+                                                key={`image-nav1-${index}`}
+                                                className='mx-2 cursor-pointer overflow-hidden rounded-md border border-solid border-gray-500'
+                                            >
+                                                <img src={item} height={80} width={'100%'} />
+                                            </div>
+                                        </>
+                                    ))}
                                 </Slider>
                             </Col>
                             <Col lg={12} span={24}>
                                 <h2 className='mb-4 text-2xl font-semibold text-neutral-50'>{product?.name}</h2>
                                 <span className='text-sm italic text-zinc-400'>
-                                    Thể loại{' '}
+                                    By{' '}
                                     <span className='text-sm font-medium text-neutral-200'>
                                         {product?.category.name}
                                     </span>{' '}
@@ -112,8 +123,8 @@ const ProductDetail = (): JSX.Element => {
                                     <Col span={24} md={12}>
                                         <Row gutter={[24, 0]} align={'middle'}>
                                             <Col span={24} md={12} className='flex items-center '>
-                                                <div className='mr-4 inline-block rounded-lg bg-red-600 p-1.5 text-xs  font-medium text-cyan-50'>
-                                                    Save <br /> %{' '}
+                                                <div className='mr-4 inline-block rounded-lg bg-red-600  p-1.5 text-xs  font-medium text-cyan-50'>
+                                                    Save <br /> %
                                                     {(
                                                         ((product?.price_before_discount - product?.price) /
                                                             product?.price_before_discount) *
@@ -153,18 +164,18 @@ const ProductDetail = (): JSX.Element => {
                                             size='large'
                                             icon={<RiShoppingBagLine fontSize={20} className='pt-0.5' />}
                                         >
-                                            Thêm giỏ hàng
+                                            Add to Cart
                                         </Button>
                                     </Col>
                                     <Col span={24}>
                                         <Row gutter={[0, 12]}>
                                             <Col span={24} className='flex items-center gap-2'>
-                                                <RiTruckLine className='text-blue-800' />
+                                                <RiTruckLine size={20} className='text-blue-800' />
                                                 <span className='text-xs text-white'>Free Shipping Worldwide</span>
                                             </Col>
 
                                             <Col span={24} className='flex items-center gap-2'>
-                                                <RiCheckboxCircleLine className='text-blue-800' />
+                                                <RiCheckboxCircleLine size={20} className='text-blue-800' />
                                                 <span className='text-xs text-white'>Available in stocks</span>
                                             </Col>
                                         </Row>
@@ -205,6 +216,11 @@ const ProductDetail = (): JSX.Element => {
                                         </Row>
                                     </Col>
                                 </Row>
+                            </Col>
+
+                            <Col span={24}>
+                                <Divider className='bg-gray-500' />
+                                <ProductListLatest data={productRelated?.data.data.products || []} />
                             </Col>
                         </Row>
                     </Card>
