@@ -1,6 +1,8 @@
 import { Card, Carousel, Typography } from 'antd'
 import React, { FC, useState } from 'react'
 import { Star, Buy } from 'react-iconly'
+import { useNavigate } from 'react-router-dom'
+import { PATH } from 'src/constants/path'
 import { Product as ProductType } from 'src/types/product.type'
 import { formatCurrency, formatNumberToSocialStyle } from 'src/utils/utils'
 
@@ -9,12 +11,16 @@ interface Props {
 }
 
 const Product: FC<Props> = ({ product }): JSX.Element => {
+    const navigate = useNavigate()
     const [isHover, setIsHover] = useState<boolean>(false)
 
     const onMouseHover = () => setIsHover(true)
     const onLeaveHover = () => setIsHover(false)
     return (
-        <Card className=' overflow-hidden border border-@dark-80 bg-black p-0'>
+        <Card
+            className=' overflow-hidden border border-@dark-80 bg-black p-0'
+            onClick={() => navigate(`${PATH.PRODUCT_DETAIL}/${product._id}`)}
+        >
             <div
                 className='relative h-[300px] overflow-hidden '
                 onMouseEnter={onMouseHover}
