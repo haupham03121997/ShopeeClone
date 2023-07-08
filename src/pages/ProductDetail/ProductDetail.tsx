@@ -8,17 +8,31 @@ import { RiCheckboxCircleLine, RiShieldLine, RiShoppingBagLine, RiTimeLine, RiTr
 
 import { productApi } from 'src/apis/product.api'
 import { formatCurrency } from 'src/utils/utils'
+import { useEffect, useState } from 'react'
 
 const ProductDetail = (): JSX.Element => {
     const { id } = useParams()
+
+    const [nav1, setNav1] = useState<any>(null)
+    const [nav2, setNav2] = useState<any>(null)
     const { data, isLoading } = useQuery({
         queryKey: ['product', id],
         queryFn: () => productApi.getProductDetail(id as string)
     })
 
+    let slider1: any = []
+    let slider2: any = []
+
+    useEffect(() => {
+        setNav1(slider1)
+        setNav2(slider2)
+    }, [slider1, slider2])
+
     const product = data?.data.data
 
     const images = product?.images || []
+
+    console.log({ nav1, nav2 })
 
     return (
         <Row gutter={[24, 24]}>
@@ -39,34 +53,41 @@ const ProductDetail = (): JSX.Element => {
                                 Featured
                             </Tag>
                             <Col lg={12} span={24}>
-                                <Slider infinite={false} arrows={false}>
+                                <Slider
+                                    infinite={false}
+                                    asNavFor={nav2}
+                                    arrows={false}
+                                    ref={(slider) => (slider1 = slider)}
+                                >
                                     {images.map((item) => (
-                                        <div className='flex items-center justify-center overflow-hidden rounded-xl  border-2'>
+                                        <div className='flex items-center justify-center overflow-hidden  border-2'>
                                             <img
                                                 src={item}
                                                 width={'100%'}
                                                 height={'502px'}
-                                                className='object-cover'
+                                                className='object-cover '
                                                 alt=''
                                             />
                                         </div>
                                     ))}
                                 </Slider>
                                 <Slider
+                                    asNavFor={nav1}
                                     slidesToShow={4}
                                     swipeToSlide={true}
                                     focusOnSelect={true}
                                     infinite={false}
                                     className='mt-8'
+                                    ref={(slider) => (slider2 = slider)}
                                     arrows={false}
-                                    // responsive={[
-                                    //     {
-                                    //         breakpoint: 767,
-                                    //         settings: {
-                                    //             slidesToShow: 3
-                                    //         }
-                                    //     }
-                                    // ]}
+                                    responsive={[
+                                        {
+                                            breakpoint: 767,
+                                            settings: {
+                                                slidesToShow: 3
+                                            }
+                                        }
+                                    ]}
                                 >
                                     {images.map((item) => {
                                         return (
