@@ -81,8 +81,37 @@ body.dark .ant-btn-text:hover {
     color: #0010f7;
 }
 
-.ant-input-number-handler-wrap {
+body.dark .ant-btn:disabled span {
+    color: rgba(0, 0, 0, 0.25);
+}
+
+/* .ant-input-number-handler-wrap {
     display: none !important;
+} */
+
+body.dark .ant-input-number-handler-wrap {
+    background-color: transparent;
+}
+
+body.dark .ant-input-number-handler-down {
+    border-block-start: 1px solid #333333;
+}
+body.dark .ant-input-number-handler {
+    border-color: #333333;
+}
+
+body.dark .ant-input-number-handler-up-inner {
+    color: white;
+}
+body.dark .ant-input-number-handler-up-inner svg {
+    width: 12px;
+}
+body.dark .ant-input-number-handler-down-inner {
+    color: white;
+}
+
+body.dark .ant-input-number-handler-down-inner svg {
+    width: 12px;
 }
 
 body.dark ::placeholder {
@@ -110,6 +139,14 @@ body.dark .ant-select-selection-item {
 
 body.dark .ant-select-selection-placeholder {
     color: white;
+}
+
+body.dark .ant-slider-track {
+    background-color: #0010f7;
+}
+
+body.dark .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px #0010f7;
 }
 
 body.dark .ant-slider-rail {
@@ -173,4 +210,11 @@ body.dark .ant-pagination .ant-pagination-item-link .anticon.anticon-left,
 .slick-other-original,
 .slick-other {
     margin: 0 -12px;
+}
+
+.ant-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
 }

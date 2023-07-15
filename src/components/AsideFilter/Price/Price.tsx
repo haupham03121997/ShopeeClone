@@ -9,8 +9,9 @@ import { PATH } from 'src/constants/path'
 import { CURRENCY_USD } from 'src/constants/app'
 import useDebounce from 'src/hooks/useDebounce'
 import useQueryParams from 'src/hooks/useQueryParams'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
+
 import { formatCurrency } from 'src/utils/utils'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface PriceProps {
     priceMin: number

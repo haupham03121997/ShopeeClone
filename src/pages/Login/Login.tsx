@@ -19,6 +19,9 @@ const schema = yup
             .min(6, 'Password must be 8-10 characters and contain both numbers and letters.')
     })
     .required()
+    .shape({
+        remember: yup.boolean()
+    })
 type FormData = yup.InferType<typeof schema>
 
 const Login = () => {
@@ -32,7 +35,8 @@ const Login = () => {
     } = useForm<FormData>({
         defaultValues: {
             email: '',
-            password: ''
+            password: '',
+            remember: false
         },
         resolver: yupResolver(schema)
     })
@@ -56,7 +60,9 @@ const Login = () => {
                     if (formError) {
                         Object.keys(formError).forEach((key) => {
                             setError(key as keyof Omit<FormData, 'confirmPassword'>, {
-                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                                message: formError[key as keyof Omit<FormData, 'confirmPassword'>] as
+                                    | string
+                                    | undefined,
                                 type: 'Server'
                             })
                         })

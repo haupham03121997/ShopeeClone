@@ -2,10 +2,10 @@ import { Col, Row } from 'antd'
 import { CloseSquare, Star } from 'react-iconly'
 import classnames from 'classnames'
 import useQueryParams from 'src/hooks/useQueryParams'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { PATH } from 'src/constants/path'
 import { omit } from 'lodash'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 const listStars = [
     {

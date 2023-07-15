@@ -65,10 +65,9 @@ const ProductListLatest: FC<Props> = ({ data }): JSX.Element => {
         >
             {data.map((item) => {
                 return (
-                    <div className='px-2'>
+                    <div className='px-2' key={item._id}>
                         <div
                             onClick={() => navigate(`${PATH.PRODUCT_DETAIL}/${item._id}`)}
-                            key={item._id}
                             className='flex cursor-pointer flex-col justify-items-center rounded-md border border-solid border-slate-500  p-4'
                         >
                             <div className='mb-4 flex w-full items-center justify-items-center'>
@@ -103,11 +102,11 @@ const ProductListLatest: FC<Props> = ({ data }): JSX.Element => {
                                     </span>
                                 </Space>
                             </div>
-                            <Space size={6}>
+                            <Space size={2} direction='vertical'>
                                 <span className='text-center text-2xl font-bold text-blue-600'>
                                     {formatCurrency(item.price)}
                                 </span>
-                                <span className='text-sm font-semibold line-through dark:text-slate-600'>
+                                <span className='block text-sm font-semibold line-through dark:text-slate-600'>
                                     {formatCurrency(item.price_before_discount)}
                                 </span>
                             </Space>

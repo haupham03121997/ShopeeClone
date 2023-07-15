@@ -4,9 +4,10 @@ import { ChevronDown } from 'react-iconly'
 import { omit } from 'lodash'
 import { PRICE, SORT_PRODUCT } from 'src/constants/sort'
 import SortProductItem from './SortProductItem'
-import { QueryConfig } from 'src/pages/ProductList/ProductList'
+
 import { ProductListConfig } from 'src/types/product.type'
 import { useSearchParams } from 'react-router-dom'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
     queryConfig: QueryConfig
