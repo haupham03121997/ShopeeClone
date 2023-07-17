@@ -12,8 +12,10 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { PATH } from 'src/constants/path'
 import { omit } from 'lodash'
+import useAppContext from 'src/hooks/useAppContext'
 
 const Header: FC = (): JSX.Element => {
+    const { currentUser } = useAppContext()
     const navigate = useNavigate()
     const [searchHeader, setSearchHeader] = useState<boolean>(false)
     const [searchActive, setSearchActive] = useState<boolean>(false)
@@ -97,8 +99,12 @@ const Header: FC = (): JSX.Element => {
                             }
                         />
                         <HeaderCard />
-                        <HeaderNotifications />
-                        <HeaderUser />
+                        {currentUser && (
+                            <>
+                                <HeaderNotifications />
+                                <HeaderUser />
+                            </>
+                        )}
                     </Row>
                 </Col>
             </Row>

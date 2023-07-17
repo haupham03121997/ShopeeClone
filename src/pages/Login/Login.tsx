@@ -1,6 +1,6 @@
 import { Button, Checkbox, Col, Form, Input, Row } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useMutation } from '@tanstack/react-query'
@@ -9,6 +9,7 @@ import { isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import useAppContext from 'src/hooks/useAppContext'
 import { PATH } from 'src/constants/path'
+import { removeCurrentUser } from 'src/utils/auth'
 
 const schema = yup
     .object({
@@ -31,7 +32,8 @@ const Login = () => {
         control,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: { errors },
+        getValues
     } = useForm<FormData>({
         defaultValues: {
             email: '',
@@ -52,7 +54,13 @@ const Login = () => {
             onSuccess: (data) => {
                 setIsAuthenticated(true)
                 navigate(PATH.HOME)
-                setCurrentUser(data.data.data.user)
+                const isRemember = getValues('remember')
+
+                if (!isRemember) {
+                    removeCurrentUser()
+                } else {
+                    setCurrentUser(data.data.data.user)
+                }
             },
             onError: (errors) => {
                 if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<FormData>>(errors)) {
@@ -135,10 +143,16 @@ const Login = () => {
                             />
                         </Form.Item>
                         <Row align='middle' justify='space-between'>
-                            <Form.Item className='mb-0'>
-                                <Checkbox name='remember' className='  text-white dark:text-@dark-10'>
-                                    Remember me
-                                </Checkbox>
+                            <Form.Item className='mb-0' name='remember'>
+                                <Controller
+                                    control={control}
+                                    name='remember'
+                                    render={({ field }) => (
+                                        <Checkbox {...field} className='  text-white dark:text-@dark-10'>
+                                            Remember me
+                                        </Checkbox>
+                                    )}
+                                />
                             </Form.Item>
 
                             <Link
