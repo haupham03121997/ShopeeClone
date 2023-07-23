@@ -10,6 +10,10 @@ import { useMutation } from '@tanstack/react-query'
 import { purchaseApi } from 'src/apis/purchase.api'
 import { useParams } from 'react-router-dom'
 import useAppContext from 'src/hooks/useAppContext'
+import { toast } from 'react-hot-toast'
+import { queryClient } from 'src/main'
+import { PURCHASE_STATUS } from 'src/constants/purchase'
+import { useModalLoginSlice } from 'src/store/store'
 
 interface Props {
     product: Product
@@ -18,15 +22,31 @@ interface Props {
 const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
     const { id } = useParams()
     const { isAuthenticated } = useAppContext()
+    const { isOpenModalLogin, setIsOpenModalLogin } = useModalLoginSlice((state) => state)
     const [addToCartCheck, setAddToCartCheck] = useState(false)
-    const [buyCount, setBuyCount] = useState<number | null>(0)
-    const { mutate: addToCartMutation, isLoading } = useMutation(purchaseApi.addToCard)
+    const [buyCount, setBuyCount] = useState<number | string | null>(0)
+    const { mutate: addToCartMutation, isLoading, data } = useMutation(purchaseApi.addToCard)
 
     const addToCard = () => {
-        addToCartMutation({ buy_count: buyCount || 0, product_id: id as string })
+        addToCartMutation(
+            { buy_count: (buyCount || 0) as number, product_id: id as string },
+            {
+                onSuccess: () => {
+                    toast.success('Hàng đã vào trong giỏ của bạn!!! 🚀')
+                    queryClient.invalidateQueries({ queryKey: ['cart', { status: PURCHASE_STATUS.IN_CART }] })
+                },
+
+                onError: () => toast.error('Opps! Đã xảy ra vấn đề. Vui lòng thử lại nhé 🤧')
+            }
+        )
     }
 
-    const showQuantity = () => setAddToCartCheck(true)
+    const showQuantity = () => {
+        if (!isAuthenticated) {
+            return setIsOpenModalLogin(true)
+        }
+        setAddToCartCheck(true)
+    }
 
     return (
         <Col lg={12} span={24}>
@@ -69,7 +89,7 @@ const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
                     <Typography className='text-sm font-medium dark:text-gray-400'>12 Ratings</Typography>
                 </Col>
             </Row>
-            <Divider className='bg-gray-500' />
+            <Divider className='bg-@dark-80' />
             <Row gutter={[0, 24]}>
                 <Col>
                     <Space size={12}>
@@ -100,7 +120,7 @@ const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
                     </Row>
                 </Col>
             </Row>
-            <Divider className=' bg-gray-500' />
+            <Divider className='bg-@dark-80' />
             <Row>
                 <Col span={12}>
                     <Row align={'middle'} gutter={[12, 0]}>

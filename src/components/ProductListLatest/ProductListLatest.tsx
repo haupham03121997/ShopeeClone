@@ -68,7 +68,7 @@ const ProductListLatest: FC<Props> = ({ data }): JSX.Element => {
                     <div className='px-2' key={item._id}>
                         <div
                             onClick={() => navigate(`${PATH.PRODUCT_DETAIL}/${item._id}`)}
-                            className='flex cursor-pointer flex-col justify-items-center rounded-md border border-solid border-slate-500  p-4'
+                            className='flex cursor-pointer flex-col justify-items-center rounded-md border border-solid border-@dark-80  p-4'
                         >
                             <div className='mb-4 flex w-full items-center justify-items-center'>
                                 <img

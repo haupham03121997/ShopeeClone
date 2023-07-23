@@ -1,5 +1,5 @@
 export const PURCHASE_STATUS = {
-    IN_CART: 1,
+    IN_CART: -1,
     ALL: 1,
     WAITING_CONFIRM: 2,
     SHIPPING: 3,

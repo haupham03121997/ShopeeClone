@@ -51,6 +51,10 @@ body .ant-input:focus {
     box-shadow: 0px 0px 10px rgba(10, 175, 255, 0.35) !important;
 }
 
+.ant-input-number.ant-input-number-focused {
+    box-shadow: 0px 0px 10px rgba(10, 175, 255, 0.35) !important;
+}
+
 body.dark .ant-input-number {
     border-color: #333333;
     background: #141414;
@@ -255,6 +259,8 @@ body.dark .dropdown-render {
     background-color: #010101;
     padding: 20px;
     border: 1px solid #333333;
+
+    max-width: 450px;
 
     border-radius: 8px;
     -webkit-border-radius: 8px;

@@ -30,7 +30,7 @@ const Sidebar = (): JSX.Element => {
                     {isAuthenticated ? (
                         <CurrentUser showRole />
                     ) : (
-                        <Link to={PATH.LOGIN} className='w-full'>
+                        <Link to={`/${PATH.LOGIN}`} className='w-full'>
                             <Button size='large' className='w-full py-5' type='primary'>
                                 Sign in
                             </Button>

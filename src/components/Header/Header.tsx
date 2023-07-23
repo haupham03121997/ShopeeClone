@@ -98,9 +98,10 @@ const Header: FC = (): JSX.Element => {
                                 )
                             }
                         />
-                        <HeaderCard />
+
                         {currentUser && (
                             <>
+                                <HeaderCard />
                                 <HeaderNotifications />
                                 <HeaderUser />
                             </>

@@ -1,4 +1,6 @@
 import axios, { isAxiosError, AxiosError, HttpStatusCode } from 'axios'
+import dayjs, { Dayjs } from 'dayjs'
+import { FORMAT_DATE } from 'src/constants/app'
 
 // error from axios
 export function isAxiosErrorFuncs<T>(errors: unknown): errors is AxiosError<T> {
@@ -38,4 +40,8 @@ export function generateNameId({ name, id }: { name: string; id: string }) {
 function getIdFromNameId(nameId: string) {
     const arr = nameId.split('-i.')
     return arr[arr.length - 1]
+}
+
+export function formatDate(date: Dayjs) {
+    return dayjs(date).format(FORMAT_DATE)
 }

@@ -21,8 +21,12 @@ const MainLayoutInner: FC<Props> = ({ children }) => {
         if (isOpenModalLogin && !isAuthenticated) {
             modalLoginRef.current?.confirm({
                 title: 'Đăng Nhập Ngay! Điều Bí Ẩn Trong Tôi Đang Chờ Bạn Khám Phá 🙈',
-                action: () => {}
+                action: () => {
+                    setIsOpenModalLogin(false)
+                }
             })
+        } else {
+            modalLoginRef.current?.handleClose()
         }
     }, [isOpenModalLogin])
     return (

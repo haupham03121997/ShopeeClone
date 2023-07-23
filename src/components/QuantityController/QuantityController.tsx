@@ -1,23 +1,27 @@
-import { InputNumber } from 'antd'
+import { InputNumber, InputNumberProps } from 'antd'
+import { valueType } from 'antd/es/statistic/utils'
 import React, { FC, useEffect, useState } from 'react'
 import useDebounce from 'src/hooks/useDebounce'
 
-interface Props {
-    onChangeValue: (value: number | null) => void
+type TypeValue = number | string | null
+interface Props extends InputNumberProps {
+    onChangeValue: (value: TypeValue) => void
 }
 
-const QuantityController: FC<Props> = ({ onChangeValue }): JSX.Element => {
-    const [value, setValue] = useState<number | null>(0)
-    const handleOnchange = (value: number | null) => {
-        setValue(value)
+const QuantityController: FC<Props> = ({ onChangeValue, ...props }): JSX.Element => {
+    const [value, setValue] = useState<number | string | null>(0)
+    const handleOnchange = (value: TypeValue) => {
+        if (value && Number(value) >= 0) {
+            setValue(value)
+        }
     }
-    const valueDebounce = useDebounce<number | null>(value, 500)
+    const valueDebounce = useDebounce<TypeValue>(value, 500)
 
     useEffect(() => {
         onChangeValue(valueDebounce)
     }, [valueDebounce])
 
-    return <InputNumber className='py-1' onChange={handleOnchange} />
+    return <InputNumber {...props} className='py-1' onChange={handleOnchange} />
 }
 
 export default QuantityController

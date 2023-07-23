@@ -41,7 +41,7 @@ const ProductDetail = (): JSX.Element => {
             </Col>
             <Col span={24}>
                 {product && (
-                    <Card className='relative rounded-md border border-slate-500  bg-@dark-100 p-8'>
+                    <Card className='relative rounded-md border border-@dark-80  bg-@dark-100 p-8'>
                         <Row gutter={[32, 0]}>
                             <Tag
                                 className='absolute left-10 top-10 z-10 border-none bg-blue-600 bg-transparent text-white '
@@ -54,7 +54,7 @@ const ProductDetail = (): JSX.Element => {
                             <ProductDetailInfo product={product} />
 
                             <Col span={24}>
-                                <Divider className='bg-gray-500' />
+                                <Divider className='bg-@dark-80' />
                                 <ProductListLatest data={productRelated?.data.data.products || []} />
                             </Col>
                         </Row>

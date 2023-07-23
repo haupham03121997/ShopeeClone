@@ -7,4 +7,5 @@ export type PayloadData = {
 
 export type Handle = {
     confirm: (data: PayloadData) => void
+    handleClose: () => void
 }

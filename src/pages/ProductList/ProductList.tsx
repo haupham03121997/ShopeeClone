@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { Col, Row, Pagination } from 'antd'
@@ -12,6 +12,7 @@ import { SkeletonProductList } from 'src/components/Skeletons'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 
 const ProductList = (): JSX.Element => {
+    const refDiv = useRef<HTMLDivElement | null>(null)
     const [_, setSearchParams] = useSearchParams({})
     const { queryConfig } = useQueryConfig()
 
@@ -30,6 +31,7 @@ const ProductList = (): JSX.Element => {
     const pageSize = Number(data?.data.data.pagination.page_size) || 0
     return (
         <Row gutter={[32, 32]} className='pb-8'>
+            <div ref={refDiv} />
             <Col span={24}>
                 <SortProductList queryConfig={queryConfig} />
             </Col>
@@ -50,7 +52,13 @@ const ProductList = (): JSX.Element => {
                                     current={Number(queryConfig.page)}
                                     pageSize={PAGINATION_DEFAULT.LIMIT}
                                     showSizeChanger={false}
-                                    onChange={(page) => setSearchParams({ ...queryConfig, page: String(page) })}
+                                    onChange={(page) => {
+                                        refDiv.current?.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'start'
+                                        })
+                                        setSearchParams({ ...queryConfig, page: String(page) })
+                                    }}
                                 />
                             </Col>
                         )}

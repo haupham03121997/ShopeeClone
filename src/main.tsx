@@ -9,8 +9,9 @@ import { AppProvider } from './context/app.context'
 
 import './index.css'
 import './i18n/index'
+import { Toaster } from 'react-hot-toast'
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             refetchOnWindowFocus: false
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <QueryClientProvider client={queryClient}>
             <AppProvider>
                 <App />
+                <Toaster position='top-center' />
             </AppProvider>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

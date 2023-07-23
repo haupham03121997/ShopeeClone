@@ -1,4 +1,4 @@
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, theme } from 'antd'
 import { Toaster } from 'react-hot-toast'
 import useRouteElement from './useRouteElement'
 import 'slick-carousel/slick/slick.css'
@@ -10,7 +10,8 @@ function App() {
             theme={{
                 token: {
                     colorPrimary: '#0010f7'
-                }
+                },
+                algorithm: theme.darkAlgorithm
             }}
         >
             {useRouteElement()}

@@ -11,7 +11,7 @@ const purchaseApi = {
     addToCard: (body: PurChaseParams) => http.post<SuccessResponseApi<Purchase>>('/purchases/add-to-cart', body),
     updatePurchase: (body: PurChaseParams) =>
         http.post<SuccessResponseApi<Purchase>>('/purchases/update-purchase', body),
-    getPurchases: (params: { status: PurchaseListStatus }) =>
+    getPurchases: (params: { status: number }) =>
         http.get<SuccessResponseApi<Purchase[]>>(`/purchases?status`, { params }),
     deletePurchase: (purchaseIds: string[]) =>
         http.delete<SuccessResponseApi<{ deleted_count: number }>>(`/purchases`, {

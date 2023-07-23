@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import Register from './pages/Register'
 import ProductDetail from './pages/ProductDetail'
 import SearchProducts from './pages/SearchProducts'
+import Cart from './pages/Cart'
 
 function ProtectedRoute() {
     const { isAuthenticated } = useAppContext()
@@ -85,6 +86,20 @@ export default function useRouteElement() {
                     <SearchProducts />
                 </MainLayout>
             )
+        },
+        {
+            path: PATH.CART,
+            element: <ProtectedRoute />,
+            children: [
+                {
+                    path: PATH.CART,
+                    element: (
+                        <MainLayout>
+                            <Cart />
+                        </MainLayout>
+                    )
+                }
+            ]
         }
     ])
     return routeElements

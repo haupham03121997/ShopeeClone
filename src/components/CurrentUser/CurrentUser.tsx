@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CurrentUser: FC<Props> = ({ showRole, hiddenEmail, showTooltip }): JSX.Element => {
-    const { currentUser, setIsAuthenticated } = useAppContext()
+    const { currentUser, setIsAuthenticated, setCurrentUser } = useAppContext()
 
     const { mutate } = useMutation({
         mutationFn: () => logoutAccount()
@@ -25,6 +25,7 @@ const CurrentUser: FC<Props> = ({ showRole, hiddenEmail, showTooltip }): JSX.Ele
         await mutate()
         removeCurrentUser()
         setIsAuthenticated(false)
+        setCurrentUser(null)
     }
 
     return (

@@ -89,14 +89,22 @@ const ModalLogin = React.forwardRef((props: Props, ref) => {
     useImperativeHandle(
         ref,
         () => ({
-            confirm
+            confirm,
+            handleClose
         }),
         []
     )
 
     return (
         <Modal {...props} open={open} title={data?.title} style={{ top: 20, background: 'black' }} footer={false}>
-            <Form layout='vertical' className=' mt-6 xl:mt-12' autoComplete='off' onFinish={onSubmit}>
+            <Form
+                action='http://localhost:3000/authentication/login'
+                method='POST'
+                layout='vertical'
+                className=' mt-6 xl:mt-12'
+                autoComplete='off'
+                onFinish={onSubmit}
+            >
                 <span className=' block pb-2  text-white dark:text-@dark-10'>Email :</span>
                 <Form.Item name='email'>
                     <Controller

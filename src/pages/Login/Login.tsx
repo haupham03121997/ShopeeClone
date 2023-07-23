@@ -58,6 +58,7 @@ const Login = () => {
 
                 if (!isRemember) {
                     removeCurrentUser()
+                    setCurrentUser(data.data.data.user)
                 } else {
                     setCurrentUser(data.data.data.user)
                 }

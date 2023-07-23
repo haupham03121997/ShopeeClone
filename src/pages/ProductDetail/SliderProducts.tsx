@@ -22,9 +22,9 @@ const SliderProducts: FC<Props> = ({ images }): JSX.Element => {
                 {images.map((item, index) => (
                     <div
                         key={`image-nav2-${index}`}
-                        className='flex items-center justify-center overflow-hidden  border-2'
+                        className='flex items-center justify-center overflow-hidden rounded'
                     >
-                        <img src={item} width={'100%'} height={'502px'} className='object-cover ' alt='' />
+                        <img src={item} width={'100%'} height={'502px'} className='rounded object-cover' alt='' />
                     </div>
                 ))}
             </Slider>
