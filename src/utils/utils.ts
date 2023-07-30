@@ -1,4 +1,4 @@
-import axios, { isAxiosError, AxiosError, HttpStatusCode } from 'axios'
+import { isAxiosError, AxiosError, HttpStatusCode } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { FORMAT_DATE } from 'src/constants/app'
 
@@ -37,7 +37,7 @@ export function generateNameId({ name, id }: { name: string; id: string }) {
     removeSpecialCharacter(name).replace(/\s/g, '-') + `-i.${id}`
 }
 
-function getIdFromNameId(nameId: string) {
+export function getIdFromNameId(nameId: string) {
     const arr = nameId.split('-i.')
     return arr[arr.length - 1]
 }

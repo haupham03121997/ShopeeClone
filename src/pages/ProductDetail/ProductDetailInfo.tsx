@@ -22,10 +22,10 @@ interface Props {
 const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
     const { id } = useParams()
     const { isAuthenticated } = useAppContext()
-    const { isOpenModalLogin, setIsOpenModalLogin } = useModalLoginSlice((state) => state)
+    const { setIsOpenModalLogin } = useModalLoginSlice((state) => state)
     const [addToCartCheck, setAddToCartCheck] = useState(false)
     const [buyCount, setBuyCount] = useState<number | string | null>(0)
-    const { mutate: addToCartMutation, isLoading, data } = useMutation(purchaseApi.addToCard)
+    const { mutate: addToCartMutation, isLoading } = useMutation(purchaseApi.addToCard)
 
     const addToCard = () => {
         addToCartMutation(

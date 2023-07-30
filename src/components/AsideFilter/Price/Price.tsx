@@ -19,7 +19,7 @@ interface PriceProps {
 }
 
 const priceMinValue = 0
-const priceMaxValue = 5000
+const priceMaxValue = 99000
 
 const Price = (): JSX.Element => {
     const { t: translate } = useTranslation()
@@ -113,7 +113,7 @@ const Price = (): JSX.Element => {
                     range
                     tooltip={{
                         formatter: (node) => {
-                            let parserNumber = node || 0
+                            const parserNumber = node || 0
                             return <span>{`${formatCurrency(parserNumber * CURRENCY_USD)} đ`}</span>
                         }
                     }}

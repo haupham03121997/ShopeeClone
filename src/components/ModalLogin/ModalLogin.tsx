@@ -14,7 +14,7 @@ import useAppContext from 'src/hooks/useAppContext'
 import { Link } from 'react-router-dom'
 import { useModalLoginSlice } from 'src/store/store'
 
-interface Props extends ModalProps {}
+type Props = ModalProps
 
 const schema = yup
     .object({

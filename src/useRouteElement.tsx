@@ -11,6 +11,8 @@ import Register from './pages/Register'
 import ProductDetail from './pages/ProductDetail'
 import SearchProducts from './pages/SearchProducts'
 import Cart from './pages/Cart'
+import AddressInformation from './pages/AddressInformation'
+import PaymentOptions from './pages/PaymentOptions'
 
 function ProtectedRoute() {
     const { isAuthenticated } = useAppContext()
@@ -96,6 +98,34 @@ export default function useRouteElement() {
                     element: (
                         <MainLayout>
                             <Cart />
+                        </MainLayout>
+                    )
+                }
+            ]
+        },
+        {
+            path: PATH.ADDRESS_INFORMATION,
+            element: <ProtectedRoute />,
+            children: [
+                {
+                    path: PATH.ADDRESS_INFORMATION,
+                    element: (
+                        <MainLayout>
+                            <AddressInformation />
+                        </MainLayout>
+                    )
+                }
+            ]
+        },
+        {
+            path: PATH.PAYMENT_OPTIONS,
+            element: <ProtectedRoute />,
+            children: [
+                {
+                    path: PATH.PAYMENT_OPTIONS,
+                    element: (
+                        <MainLayout>
+                            <PaymentOptions />
                         </MainLayout>
                     )
                 }

@@ -1,16 +1,16 @@
 import { Star } from 'react-iconly'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import BreadcrumbItem from 'antd/es/breadcrumb/BreadcrumbItem'
-import { Breadcrumb, Button, Card, Col, Divider, Row, Space, Tag, Typography } from 'antd'
-import { RiCheckboxCircleLine, RiShieldLine, RiShoppingBagLine, RiTimeLine, RiTruckLine } from 'react-icons/ri'
+import { Breadcrumb, Card, Col, Divider, Row, Tag } from 'antd'
 
 import { productApi } from 'src/apis/product.api'
-import { formatCurrency } from 'src/utils/utils'
+
 import { ProductListConfig } from 'src/types/product.type'
 import ProductListLatest from 'src/components/ProductListLatest'
 import SliderProducts from './SliderProducts'
 import ProductDetailInfo from './ProductDetailInfo'
+import { PATH } from 'src/constants/path'
 
 const ProductDetail = (): JSX.Element => {
     const { id } = useParams()
@@ -34,10 +34,16 @@ const ProductDetail = (): JSX.Element => {
     return (
         <Row gutter={[24, 24]}>
             <Col span={24}>
-                <Breadcrumb>
-                    <BreadcrumbItem className='dark:text-white'>Home</BreadcrumbItem>
-                    <BreadcrumbItem className='dark:text-gray-300'>Product Detail</BreadcrumbItem>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <Link to={PATH.HOME}>Home</Link>
+                        },
+                        {
+                            title: 'Product Detail'
+                        }
+                    ]}
+                />
             </Col>
             <Col span={24}>
                 {product && (

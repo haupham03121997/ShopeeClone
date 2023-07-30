@@ -13,11 +13,14 @@ import { removeCurrentUser } from 'src/utils/auth'
 
 const schema = yup
     .object({
-        email: yup.string().required('The email field not blank!'),
+        email: yup
+            .string()
+            .required('The email field not blank!')
+            .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email is not formatted correctly. Please try again!'),
         password: yup
             .string()
-            .required('The password field not blank')
-            .min(6, 'Password must be 8-10 characters and contain both numbers and letters.')
+            .required('The password field not blank. Please try again!')
+            .min(6, 'Password must be 8-10 characters and contain both numbers and letters. Please try again!')
     })
     .required()
     .shape({

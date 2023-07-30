@@ -1,4 +1,4 @@
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider, Table, theme } from 'antd'
 import { Toaster } from 'react-hot-toast'
 import useRouteElement from './useRouteElement'
 import 'slick-carousel/slick/slick.css'

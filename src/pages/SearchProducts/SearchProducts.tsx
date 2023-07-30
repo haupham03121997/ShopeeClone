@@ -25,7 +25,6 @@ const SearchProducts = (): JSX.Element => {
     const productsList = data?.data.data.products || []
     const pageSize = Number(data?.data.data.pagination.page_size) || 0
 
-    console.log('dataSearch', data)
     return (
         <Row gutter={[32, 32]} className='pb-8'>
             <Col span={24}>

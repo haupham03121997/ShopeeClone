@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Col, Row } from 'antd'
+import { Col, Row, Skeleton } from 'antd'
 import { Category as CategoryIcon, CloseSquare } from 'react-iconly'
 import categoryApis from 'src/apis/category.api'
 import classnames from 'classnames'
@@ -59,22 +59,27 @@ const Category = (): JSX.Element => {
                 </div>
             </Col>
             <Col span={24} className='flex flex-col gap-6 pt-4'>
-                {categories.map((categoryItem) => {
-                    return (
-                        <div
-                            className='flex cursor-pointer items-center gap-4'
-                            key={categoryItem._id}
-                            onClick={() => handleClick(categoryItem._id)}
-                        >
+                {isLoading && <Skeleton />}
+                {!isLoading &&
+                    categories.map((categoryItem) => {
+                        return (
                             <div
-                                className={classnames(' border-1 h-4 w-4 rounded-full border-solid border-slate-400', {
-                                    'bg-slate-400': category === categoryItem._id
-                                })}
-                            />
-                            <span className='text-gray-400'>{categoryItem.name}</span>
-                        </div>
-                    )
-                })}
+                                className='flex cursor-pointer items-center gap-4'
+                                key={categoryItem._id}
+                                onClick={() => handleClick(categoryItem._id)}
+                            >
+                                <div
+                                    className={classnames(
+                                        ' border-1 h-4 w-4 rounded-full border-solid border-slate-400',
+                                        {
+                                            'bg-slate-400': category === categoryItem._id
+                                        }
+                                    )}
+                                />
+                                <span className='text-gray-400'>{categoryItem.name}</span>
+                            </div>
+                        )
+                    })}
             </Col>
         </Row>
     )

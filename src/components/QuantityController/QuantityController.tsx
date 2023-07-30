@@ -1,7 +1,6 @@
+import { FC } from 'react'
+import { debounce } from 'lodash'
 import { InputNumber, InputNumberProps } from 'antd'
-import { valueType } from 'antd/es/statistic/utils'
-import React, { FC, useEffect, useState } from 'react'
-import useDebounce from 'src/hooks/useDebounce'
 
 type TypeValue = number | string | null
 interface Props extends InputNumberProps {
@@ -9,19 +8,13 @@ interface Props extends InputNumberProps {
 }
 
 const QuantityController: FC<Props> = ({ onChangeValue, ...props }): JSX.Element => {
-    const [value, setValue] = useState<number | string | null>(0)
-    const handleOnchange = (value: TypeValue) => {
+    const debouncedOnChange = debounce((value: TypeValue) => {
         if (value && Number(value) >= 0) {
-            setValue(value)
+            onChangeValue(value)
         }
-    }
-    const valueDebounce = useDebounce<TypeValue>(value, 500)
+    }, 500)
 
-    useEffect(() => {
-        onChangeValue(valueDebounce)
-    }, [valueDebounce])
-
-    return <InputNumber {...props} className='py-1' onChange={handleOnchange} />
+    return <InputNumber min={0} max={99} {...props} className='py-1' onChange={debouncedOnChange} />
 }
 
 export default QuantityController

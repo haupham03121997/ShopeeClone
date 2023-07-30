@@ -1,6 +1,4 @@
-import { IModal } from './types/IModal'
-import { create } from 'zustand'
-
 import useModalLoginSlice from './hooks/useModalLoginSlice'
+import useExtendedPurchaseSlice from './hooks/useExtendedPurchaseSlice'
 
-export { useModalLoginSlice }
+export { useModalLoginSlice, useExtendedPurchaseSlice }
