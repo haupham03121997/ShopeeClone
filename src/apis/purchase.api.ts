@@ -17,7 +17,7 @@ const purchaseApi = {
         http.delete<SuccessResponseApi<{ deleted_count: number }>>(`/purchases`, {
             data: purchaseIds
         }),
-    buyPurchase: ( body: {product_id: string , buy_count :number}[]) =>http.post("/purchases/buy-products", body)
+    buyPurchase: (body: { product_id: string; buy_count: number }[]) => http.post('/purchases/buy-products', body)
 }
 
 export { purchaseApi }

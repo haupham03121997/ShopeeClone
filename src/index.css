@@ -76,6 +76,7 @@ body .ant-input-affix-wrapper:focus,
     box-shadow: none;
 }
 
+/* BUTTON */
 body.dark button[disabled] {
     background-color: #0063f7 !important;
     border-color: transparent !important;
@@ -101,6 +102,22 @@ body.dark .ant-btn:disabled span {
     color: rgba(0, 0, 0, 0.5);
 }
 
+body.dark .ant-btn.ant-btn-background-ghost {
+    background-color: transparent;
+    color: #273ae8;
+    border-color: #273ae8;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+}
+
+body.dark .ant-btn.ant-btn-background-ghost:hover {
+    background-color: transparent;
+    color: #0311d5;
+    border-color: #0311d5;
+}
 /* .ant-input-number-handler-wrap {
     display: none !important;
 } */

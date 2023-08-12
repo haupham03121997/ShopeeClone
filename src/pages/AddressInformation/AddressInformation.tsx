@@ -42,7 +42,6 @@ const AddressInformation: React.FC = (): JSX.Element => {
         resolver: yupResolver(schema)
     })
 
-
     return (
         <>
             <PaymentWrapper isValid={isValid}>
@@ -133,6 +132,7 @@ const AddressInformation: React.FC = (): JSX.Element => {
                                             }}
                                         />
                                     </Col>
+
                                     <Col xs={24} md={12}>
                                         <span className=' block pb-2  text-white dark:text-@dark-10'>
                                             {' '}

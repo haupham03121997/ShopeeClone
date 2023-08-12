@@ -6,14 +6,14 @@ import { RiCheckboxCircleLine, RiShieldLine, RiShoppingBagLine, RiTimeLine, RiTr
 import { Product } from 'src/types/product.type'
 import { formatCurrency } from 'src/utils/utils'
 import QuantityController from 'src/components/QuantityController/QuantityController'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { purchaseApi } from 'src/apis/purchase.api'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useAppContext from 'src/hooks/useAppContext'
 import { toast } from 'react-hot-toast'
-import { queryClient } from 'src/main'
 import { PURCHASE_STATUS } from 'src/constants/purchase'
 import { useModalLoginSlice } from 'src/store/store'
+import { PATH } from 'src/constants/path'
 
 interface Props {
     product: Product
@@ -21,6 +21,8 @@ interface Props {
 
 const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
     const { id } = useParams()
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const { isAuthenticated } = useAppContext()
     const { setIsOpenModalLogin } = useModalLoginSlice((state) => state)
     const [addToCartCheck, setAddToCartCheck] = useState(false)
@@ -46,6 +48,14 @@ const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
             return setIsOpenModalLogin(true)
         }
         setAddToCartCheck(true)
+    }
+
+    const handleBuyNow = () => {
+        navigate(PATH.CART, {
+            state: {
+                idProductBuyNow: id
+            }
+        })
     }
 
     return (
@@ -97,12 +107,16 @@ const ProductDetailInfo: FC<Props> = ({ product }): JSX.Element => {
                         <Button
                             type='primary'
                             size='large'
+                            ghost
                             icon={<RiShoppingBagLine fontSize={20} />}
                             onClick={addToCartCheck ? addToCard : showQuantity}
                             loading={isLoading}
                             disabled={addToCartCheck && (isLoading || !buyCount)}
                         >
                             Add to Cart
+                        </Button>
+                        <Button type='primary' size='large' onClick={handleBuyNow}>
+                            Buy now
                         </Button>
                     </Space>
                 </Col>

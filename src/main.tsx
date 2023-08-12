@@ -11,10 +11,11 @@ import './index.css'
 import './i18n/index'
 import { Toaster } from 'react-hot-toast'
 
-export const queryClient = new QueryClient({
+const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            refetchOnWindowFocus: false
+            refetchOnWindowFocus: false,
+            retry: false
         }
     }
 })
