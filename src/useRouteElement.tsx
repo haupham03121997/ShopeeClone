@@ -6,13 +6,16 @@ import AuthenticationLayout from './layouts/AuthenticationLayout'
 import MainLayout from './layouts/MainLayout'
 import Login from './pages/Login'
 import ProductList from './pages/ProductList'
-import Profile from './pages/Profile'
+import UserProfile from './pages/UserProfile'
 import Register from './pages/Register'
 import ProductDetail from './pages/ProductDetail'
 import SearchProducts from './pages/SearchProducts'
 import Cart from './pages/Cart'
 import AddressInformation from './pages/AddressInformation'
 import PaymentOptions from './pages/PaymentOptions'
+import UserLayout from './layouts/UserLayout'
+import ChangePassword from './pages/ChagePassword'
+import UserAddress from './pages/UserAddress'
 
 function ProtectedRoute() {
     const { isAuthenticated } = useAppContext()
@@ -31,12 +34,68 @@ export default function useRouteElement() {
             element: <ProtectedRoute />,
             children: [
                 {
-                    path: PATH.PROFILE,
+                    path: PATH.CART,
+                    element: <ProtectedRoute />,
+                    children: [
+                        {
+                            path: PATH.CART,
+                            element: (
+                                <MainLayout>
+                                    <Cart />
+                                </MainLayout>
+                            )
+                        }
+                    ]
+                },
+                {
+                    path: PATH.ADDRESS_INFORMATION,
+                    element: <ProtectedRoute />,
+                    children: [
+                        {
+                            path: PATH.ADDRESS_INFORMATION,
+                            element: (
+                                <MainLayout>
+                                    <AddressInformation />
+                                </MainLayout>
+                            )
+                        }
+                    ]
+                },
+                {
+                    path: PATH.PAYMENT_OPTIONS,
+                    element: <ProtectedRoute />,
+                    children: [
+                        {
+                            path: PATH.PAYMENT_OPTIONS,
+                            element: (
+                                <MainLayout>
+                                    <PaymentOptions />
+                                </MainLayout>
+                            )
+                        }
+                    ]
+                },
+                {
+                    path: PATH.USER,
                     element: (
-                        <MainLayout>
-                            <Profile />
+                        <MainLayout typeNav='nav-user'>
+                            <UserLayout />
                         </MainLayout>
-                    )
+                    ),
+                    children: [
+                        {
+                            path: PATH.USER_PROFILE,
+                            element: <UserProfile />
+                        },
+                        {
+                            path: PATH.CHANGE_PASSWORD,
+                            element: <ChangePassword />
+                        },
+                        {
+                            path: PATH.USER_ADDRESS,
+                            element: <UserAddress />
+                        }
+                    ]
                 }
             ]
         },
@@ -88,48 +147,6 @@ export default function useRouteElement() {
                     <SearchProducts />
                 </MainLayout>
             )
-        },
-        {
-            path: PATH.CART,
-            element: <ProtectedRoute />,
-            children: [
-                {
-                    path: PATH.CART,
-                    element: (
-                        <MainLayout>
-                            <Cart />
-                        </MainLayout>
-                    )
-                }
-            ]
-        },
-        {
-            path: PATH.ADDRESS_INFORMATION,
-            element: <ProtectedRoute />,
-            children: [
-                {
-                    path: PATH.ADDRESS_INFORMATION,
-                    element: (
-                        <MainLayout>
-                            <AddressInformation />
-                        </MainLayout>
-                    )
-                }
-            ]
-        },
-        {
-            path: PATH.PAYMENT_OPTIONS,
-            element: <ProtectedRoute />,
-            children: [
-                {
-                    path: PATH.PAYMENT_OPTIONS,
-                    element: (
-                        <MainLayout>
-                            <PaymentOptions />
-                        </MainLayout>
-                    )
-                }
-            ]
         }
     ])
     return routeElements

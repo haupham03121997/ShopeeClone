@@ -16,7 +16,7 @@ const schema = yup
         email: yup
             .string()
             .required('The email field not blank!')
-            .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email is not formatted correctly. Please try again!'),
+            .matches(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email is not formatted correctly. Please try again!'),
         password: yup
             .string()
             .required('The password field not blank. Please try again!')

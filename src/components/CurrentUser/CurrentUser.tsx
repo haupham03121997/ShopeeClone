@@ -7,6 +7,8 @@ import { Filter, Logout, Password, ShieldDone, User } from 'react-iconly'
 import { useMutation } from '@tanstack/react-query'
 import { logoutAccount } from 'src/apis/auth.api'
 import { removeCurrentUser } from 'src/utils/auth'
+import { useNavigate } from 'react-router-dom'
+import { PATH } from 'src/constants/path'
 
 interface Props {
     showRole?: boolean
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const CurrentUser: FC<Props> = ({ showRole, hiddenEmail, showTooltip }): JSX.Element => {
+    const navigate = useNavigate()
     const { currentUser, setIsAuthenticated, setCurrentUser } = useAppContext()
 
     const { mutate } = useMutation({
@@ -26,6 +29,10 @@ const CurrentUser: FC<Props> = ({ showRole, hiddenEmail, showTooltip }): JSX.Ele
         removeCurrentUser()
         setIsAuthenticated(false)
         setCurrentUser(null)
+    }
+
+    const handleViewProfile = () => {
+        navigate(PATH.USER_PROFILE)
     }
 
     return (
@@ -74,7 +81,10 @@ const CurrentUser: FC<Props> = ({ showRole, hiddenEmail, showTooltip }): JSX.Ele
                         <Space direction='vertical' size={12} className='w-full'>
                             <Space size={6} className=' hover-react-iconly cursor-pointer'>
                                 <User set='light' primaryColor='#d1d5db' size={16} />
-                                <Typography className='cursor-pointer pb-1 text-sm transition-all duration-100 dark:text-gray-300 hover:dark:text-blue-700'>
+                                <Typography
+                                    onClick={handleViewProfile}
+                                    className='cursor-pointer pb-1 text-sm transition-all duration-100 dark:text-gray-300 hover:dark:text-blue-700'
+                                >
                                     View Profile
                                 </Typography>
                             </Space>
