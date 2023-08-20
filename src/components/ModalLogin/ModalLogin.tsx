@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
