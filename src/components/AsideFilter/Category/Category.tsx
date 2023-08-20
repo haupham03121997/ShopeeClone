@@ -5,7 +5,7 @@ import categoryApis from 'src/apis/category.api'
 import classnames from 'classnames'
 import useQueryParams from 'src/hooks/useQueryParams'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { PATH } from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 

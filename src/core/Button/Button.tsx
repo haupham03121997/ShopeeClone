@@ -4,7 +4,7 @@ interface Props extends ButtonProps {
     label?: string
 }
 function Button(props: Props) {
-    const { label, ...restProps } = props
+    const { ...restProps } = props
     return <ButtonAntd {...restProps}>Button</ButtonAntd>
 }
 

@@ -13,7 +13,7 @@ import { ProductListConfig } from 'src/types/product.type'
 
 const SearchProducts = (): JSX.Element => {
     const navigate = useNavigate()
-    const [_, setSearchParams] = useSearchParams()
+    const [, setSearchParams] = useSearchParams()
     const { queryConfig } = useQueryConfig()
     const { data, isLoading } = useQuery({
         queryKey: ['products', queryConfig],

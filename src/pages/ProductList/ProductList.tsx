@@ -13,7 +13,7 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 
 const ProductList = (): JSX.Element => {
     const refDiv = useRef<HTMLDivElement | null>(null)
-    const [_, setSearchParams] = useSearchParams({})
+    const [, setSearchParams] = useSearchParams({})
     const { queryConfig } = useQueryConfig()
 
     const { data, isLoading } = useQuery({

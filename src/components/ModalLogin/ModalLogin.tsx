@@ -3,7 +3,7 @@
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
-import React, { Ref, useImperativeHandle, useState } from 'react'
+import React, { useImperativeHandle, useState } from 'react'
 import { Button, Checkbox, Col, Form, Input, Modal, ModalProps, Row } from 'antd'
 
 import useOpen from 'src/hooks/useOpen'

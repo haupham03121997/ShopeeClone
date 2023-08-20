@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'antd'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 
 import ControlTextInput from 'src/components/ControlTextInput'
 import { SchemaRegister, schemaRegister } from 'src/utils/rules'

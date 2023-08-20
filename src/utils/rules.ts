@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-const settings = [
+export const settings = [
     {
         key: 'email',
         value: /^[0-9a-z@]$/,

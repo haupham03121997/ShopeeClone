@@ -1,8 +1,7 @@
 import { Col } from 'antd'
-import React, { FC } from 'react'
-import { Home } from 'react-iconly'
+import React from 'react'
 
-const HeaderText: FC = (): JSX.Element => {
+const HeaderText: React.FC = (): JSX.Element => {
     return (
         <Col xl={16} lg={14} className='flex items-center justify-start'>
             <p className='text-gray-50'>

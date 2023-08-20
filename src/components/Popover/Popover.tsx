@@ -20,7 +20,7 @@ interface Props {
     placement?: Placement
 }
 
-const Popover: FC<Props> = ({ children, renderPopover, className, placement }): JSX.Element => {
+const Popover: FC<Props> = ({ children, renderPopover, className }): JSX.Element => {
     const id = useId()
     const arrowRef = useRef<HTMLElement | null>(null)
     const [isOpen, setIsOpen] = useState<boolean>(false)

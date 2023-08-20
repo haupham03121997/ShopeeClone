@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable jsx-a11y/alt-text */
 import { Button, Space, Typography } from 'antd'
 import React, { FC, useRef } from 'react'
 import { Star } from 'react-iconly'

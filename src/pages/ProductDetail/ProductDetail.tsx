@@ -1,7 +1,5 @@
-import { Star } from 'react-iconly'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import BreadcrumbItem from 'antd/es/breadcrumb/BreadcrumbItem'
 import { Breadcrumb, Card, Col, Divider, Row, Tag } from 'antd'
 
 import { productApi } from 'src/apis/product.api'
@@ -15,7 +13,7 @@ import { PATH } from 'src/constants/path'
 const ProductDetail = (): JSX.Element => {
     const { id } = useParams()
 
-    const { data, isLoading } = useQuery({
+    const { data } = useQuery({
         queryKey: ['product', id],
         queryFn: () => productApi.getProductDetail(id as string)
     })

@@ -1,5 +1,6 @@
 import useQueryParams from './useQueryParams'
-import { isUndefined, omitBy } from 'lodash'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 import { PAGINATION_DEFAULT } from 'src/constants/pagination'
 import { SORT_PRODUCT } from 'src/constants/sort'
 import { ProductListConfig } from 'src/types/product.type'

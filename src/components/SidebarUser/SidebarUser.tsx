@@ -1,13 +1,11 @@
-import { Category as CategoryIcon, Graph, User, Buy, Camera } from 'react-iconly'
+import { Graph, User, Buy } from 'react-iconly'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Avatar, Button, Col, Divider, Layout, Row, Space, Typography } from 'antd'
+import { Button, Col, Divider, Layout, Row, Space } from 'antd'
 import classnames from 'classnames'
 
 import { PATH } from 'src/constants/path'
 import useAppContext from 'src/hooks/useAppContext'
 import CurrentUser from '../CurrentUser'
-import { useState } from 'react'
-import { UserOutlined } from '@ant-design/icons'
 
 const { Sider } = Layout
 
@@ -29,7 +27,7 @@ const items = [
 const SidebarUser = (): JSX.Element => {
     const navigate = useNavigate()
     const { pathname } = useLocation()
-    const { isAuthenticated, currentUser } = useAppContext()
+    const { isAuthenticated } = useAppContext()
 
     return (
         <Sider trigger={null} collapsible collapsed={false} width={256} className='bg-black'>

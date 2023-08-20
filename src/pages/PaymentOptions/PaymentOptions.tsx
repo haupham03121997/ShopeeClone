@@ -1,4 +1,4 @@
-import { Col, Divider, Radio, RadioChangeEvent, Row, Space, Tooltip, Typography } from 'antd'
+import { Col, Divider, Radio, RadioChangeEvent, Row, Space, Typography } from 'antd'
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import PaymentWrapper from 'src/components/PaymentWrapper'
@@ -78,7 +78,7 @@ const PaymentOptions: React.FC = (): JSX.Element => {
                                         <Typography className='text-sm text-gray-500'>{item.subTitle}</Typography>
                                     </Space>
                                     <div className='flex items-center justify-center'>
-                                        <img src={item.icon} width={60} height={60} />
+                                        <img src={item.icon} width={60} height={60} alt='img' />
                                     </div>
                                     {item.key === optionDelivery && (
                                         <div className='absolute top-3 right-3'>

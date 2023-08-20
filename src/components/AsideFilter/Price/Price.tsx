@@ -1,4 +1,4 @@
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { Col, Row, Slider } from 'antd'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -51,7 +51,7 @@ const Price = (): JSX.Element => {
                 }).toString()
             })
         }
-    }, [debouncePriceValues, isChanged])
+    }, [debouncePriceValues, isChanged, navigate, queryParams])
 
     const priceOnChange = (value: [number, number]) => {
         setOutGoingValues({

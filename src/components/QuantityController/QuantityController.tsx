@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { InputNumber, InputNumberProps } from 'antd'
 
 type TypeValue = number | string | null

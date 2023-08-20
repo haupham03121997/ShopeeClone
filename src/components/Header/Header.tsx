@@ -1,6 +1,5 @@
 import { Button, Col, InputRef, Row } from 'antd'
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { RiCloseLine, RiMenuFill } from 'react-icons/ri'
 import HeaderText from './HeaderText'
 import { CloseSquare, Search } from 'react-iconly'
 import HeaderCard from './HeaderCard'
@@ -11,7 +10,7 @@ import classes from 'src/styles/header-search.module.css'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { PATH } from 'src/constants/path'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import useAppContext from 'src/hooks/useAppContext'
 
 const Header: FC = (): JSX.Element => {
@@ -43,12 +42,7 @@ const Header: FC = (): JSX.Element => {
 
     const onTriggerSearch = () => {
         const valueInput = inputFocusRef.current?.input?.value
-        const config = queryConfig?.order
-            ? omit({ ...queryConfig, name: valueInput }, ['order', 'sort_by'])
-            : {
-                  ...queryConfig,
-                  name: valueInput
-              }
+
         if (valueInput) {
             navigate({
                 pathname: PATH.SEARCH_PRODUCT,

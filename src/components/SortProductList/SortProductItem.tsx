@@ -10,7 +10,7 @@ interface Props {
     handleClick?: () => void
 }
 
-const SortProductItem: FC<Props> = ({ text, handleClick, value, defaultValue, isActive }): JSX.Element => {
+const SortProductItem: FC<Props> = ({ text, handleClick, isActive }): JSX.Element => {
     return (
         <Col className='flex items-center justify-center'>
             <Button

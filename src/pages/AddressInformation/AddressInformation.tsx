@@ -30,7 +30,6 @@ type FormData = yup.InferType<typeof schema>
 const AddressInformation: React.FC = (): JSX.Element => {
     const {
         control,
-        handleSubmit,
         formState: { errors, isValid }
     } = useForm<FormData>({
         defaultValues: {

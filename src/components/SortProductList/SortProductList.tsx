@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Row, Select } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { ChevronDown } from 'react-iconly'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { PRICE, SORT_PRODUCT } from 'src/constants/sort'
 import SortProductItem from './SortProductItem'
 
@@ -26,7 +27,7 @@ const SortProductList: FC<Props> = ({ queryConfig }): JSX.Element => {
 
     useEffect(() => {
         setValue(sort_by || SORT_PRODUCT.CREATED_AT)
-    }, [queryConfig])
+    }, [queryConfig, sort_by])
 
     const items = [
         {

@@ -1,17 +1,16 @@
 import { Graph } from 'react-iconly'
 import { Link } from 'react-router-dom'
-import { Avatar, Button, Col, Divider, Layout, Row, Space, Tooltip, Typography } from 'antd'
+import { Button, Divider, Layout, Row } from 'antd'
 
 import { PATH } from 'src/constants/path'
 import AsideFilter from '../AsideFilter'
 import useAppContext from 'src/hooks/useAppContext'
-import imageLogo from 'src/assets/images/memoji/memoji-1.png'
 import CurrentUser from '../CurrentUser'
 
 const { Sider } = Layout
 
 const Sidebar = (): JSX.Element => {
-    const { currentUser, isAuthenticated } = useAppContext()
+    const { isAuthenticated } = useAppContext()
 
     return (
         <Sider trigger={null} collapsible collapsed={false} width={256} className='bg-black'>
