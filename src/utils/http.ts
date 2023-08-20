@@ -2,13 +2,14 @@ import axios, { AxiosError, AxiosInstance, HttpStatusCode } from 'axios'
 import { toast } from 'react-hot-toast'
 import { AuthResponse } from 'src/types/auth.type'
 import { removeCurrentUser, setAccessTokenToLS, getAccessTokenToLS, setCurrentUser } from './auth'
+import { config } from 'src/constants/config'
 class Http {
     instance: AxiosInstance
     private accessToken: string
     constructor() {
         this.accessToken = getAccessTokenToLS()
         this.instance = axios.create({
-            baseURL: 'https://api-ecom.duthanhduoc.com/',
+            baseURL: config.baseURL,
             timeout: 10000,
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +46,7 @@ class Http {
                 if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const data: any | undefined = error.response?.data
-                    const message = data.message || error.message
+                    const message = data?.message || error.message
                     toast.error(message)
                 }
                 if (error.response?.status === HttpStatusCode.Unauthorized) {

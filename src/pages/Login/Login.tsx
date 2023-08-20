@@ -35,8 +35,7 @@ const Login = () => {
         control,
         handleSubmit,
         setError,
-        formState: { errors },
-        getValues
+        formState: { errors }
     } = useForm<FormData>({
         defaultValues: {
             email: '',
@@ -55,16 +54,10 @@ const Login = () => {
 
         await loginAccountMutate.mutate(body, {
             onSuccess: (data) => {
-                setIsAuthenticated(true)
                 navigate(PATH.HOME)
-                const isRemember = getValues('remember')
 
-                if (!isRemember) {
-                    removeCurrentUser()
-                    setCurrentUser(data.data.data.user)
-                } else {
-                    setCurrentUser(data.data.data.user)
-                }
+                setCurrentUser(data.data.data.user)
+                setIsAuthenticated(true)
             },
             onError: (errors) => {
                 if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<FormData>>(errors)) {

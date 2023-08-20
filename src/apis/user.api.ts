@@ -2,9 +2,14 @@ import { User } from 'src/types/user.type'
 import { SuccessResponseApi } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
-interface BodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'createdAt' | 'updatedAt' | 'email'> {
+interface BodyUpdateProfile {
+    address?: string
+    date_of_birth?: string
+    name?: string
+    phone?: string
+    avatar?: string
     password?: string
-    newPassword?: string
+    new_password?: string
 }
 
 const userApi = {

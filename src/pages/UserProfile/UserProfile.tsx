@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Avatar, Button, Card, Col, DatePicker, Form, Input, Modal, Radio, Row, Select, Space, Typography } from 'antd'
 import dayjs, { Dayjs } from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Camera, User as UserIcon } from 'react-iconly'
 import userApi from 'src/apis/user.api'
@@ -10,20 +10,35 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { userSchema } from 'src/utils/rules'
 import { User } from 'src/types/user.type'
 import { toast } from 'react-hot-toast'
+import { getAvatarURL, isAxiosErrorUnprocessableEntity } from 'src/utils/utils'
+import { ErrorResponseApi } from 'src/types/utils.type'
 
 const { TextArea } = Input
 
 const profileSchema = userSchema.pick(['name', 'address', 'avatar', 'phone', 'date_of_birth'])
 type FormData = Pick<User, 'name' | 'address' | 'phone' | 'avatar' | 'date_of_birth'>
+type FormDataError = Omit<FormData, 'date_of_birth'> & {
+    date_of_birth: string
+}
+
+const EXTENSION_FILE_UPLOAD = ['jpg', 'png', 'jpeg']
 
 const UserProfile: React.FC = (): JSX.Element => {
+    const refUpload = useRef<HTMLInputElement>(null)
+    const [file, setFile] = useState<File>()
+    const previewImage = useMemo(() => {
+        return file ? URL.createObjectURL(file) : ''
+    }, [file])
     const { data: profileData, refetch } = useQuery({
         queryKey: ['profile'],
         queryFn: userApi.getProfile
     })
     const [isConfirm, setIsConfirm] = useState(false)
-    const { mutate: updateUserMutate } = useMutation({
+    const { mutate: updateUserMutate, isLoading } = useMutation({
         mutationFn: userApi.updateProfile
+    })
+    const uploadAvatarMutate = useMutation({
+        mutationFn: userApi.uploadAvatar
     })
     const profile = profileData?.data.data
 
@@ -32,7 +47,9 @@ const UserProfile: React.FC = (): JSX.Element => {
         formState: { errors },
         handleSubmit,
         setValue,
-        getValues
+        getValues,
+        watch,
+        setError
     } = useForm<FormData>({
         defaultValues: {
             name: '',
@@ -51,6 +68,7 @@ const UserProfile: React.FC = (): JSX.Element => {
         setValue('avatar', profile?.avatar || '')
         setValue('date_of_birth', dayjs(profile?.date_of_birth || '01/01/1990').format('DD/MM/YYYY'))
     }, [profile, setValue])
+    const avatar = watch('avatar')
 
     const onSubmit = () => {
         setIsConfirm(true)
@@ -61,6 +79,13 @@ const UserProfile: React.FC = (): JSX.Element => {
         const formattedDate = parsedDate.format('YYYY-MM-DDTHH:mm:ss.SSSZ')
 
         try {
+            if (file) {
+                const fromData = new FormData()
+                fromData.append('image', file)
+                const uploadResponse = await uploadAvatarMutate.mutateAsync(fromData)
+                const avatarName = uploadResponse.data.data
+                setValue('avatar', avatarName)
+            }
             const body = {
                 name: getValues('name'),
                 address: getValues('address'),
@@ -72,9 +97,28 @@ const UserProfile: React.FC = (): JSX.Element => {
             setIsConfirm(false)
             refetch()
             toast.success('Updated successfully! 🙈')
-        } catch {
-            toast.error('An error has occurred. Please try again!')
+        } catch (error) {
+            if (isAxiosErrorUnprocessableEntity<ErrorResponseApi<FormDataError>>(error)) {
+                const formError = error.response?.data.data
+                if (formError) {
+                    Object.keys(formError).forEach((key) => {
+                        setError(key as keyof Omit<FormData, 'confirmPassword'>, {
+                            message: formError[key as keyof Omit<FormData, 'confirmPassword'>],
+                            type: 'Server'
+                        })
+                    })
+                }
+            }
+        } finally {
+            setIsConfirm(false)
         }
+    }
+
+    const handleClick = () => refUpload.current?.click()
+
+    const handleOnchangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fileFromLocal = event.target.files?.[0]
+        setFile(fileFromLocal)
     }
 
     return (
@@ -85,8 +129,20 @@ const UserProfile: React.FC = (): JSX.Element => {
                     <Col span={24} sm={8}>
                         <Space direction='vertical' className='flex flex-col items-center justify-center' size={8}>
                             <div className='relative'>
-                                <Avatar size={80} icon={<UserIcon />} style={{ backgroundColor: '#5d5f6d64' }} />
-                                <div className='absolute bottom-0 right-0 cursor-pointer'>
+                                <Avatar
+                                    src={previewImage || getAvatarURL(avatar)}
+                                    size={80}
+                                    icon={<UserIcon />}
+                                    style={{ backgroundColor: '#5d5f6d64' }}
+                                />
+                                <div className='absolute bottom-0 right-0 cursor-pointer' onClick={handleClick}>
+                                    <input
+                                        type='file'
+                                        accept={EXTENSION_FILE_UPLOAD.map((item) => `.${item}`).join(',')}
+                                        onChange={handleOnchangeFile}
+                                        ref={refUpload}
+                                        className='hidden'
+                                    />
                                     <Camera set='curved' style={{ color: '#273ae8' }} />
                                 </div>
                             </div>
@@ -150,7 +206,6 @@ const UserProfile: React.FC = (): JSX.Element => {
                                         control={control}
                                         name='date_of_birth'
                                         render={({ field: { onChange, value, ...field } }) => {
-                                            console.log(value)
                                             return (
                                                 <>
                                                     <DatePicker
@@ -203,7 +258,21 @@ const UserProfile: React.FC = (): JSX.Element => {
                     </Col>
                 </Row>
             </Card>
-            <Modal title='Update Profile' open={isConfirm} onOk={handleUpdate}>
+            <Modal
+                centered
+                title='Update Profile'
+                open={isConfirm}
+                onOk={handleUpdate}
+                onCancel={() => (isLoading ? undefined : setIsConfirm(false))}
+                footer={[
+                    <Button key='cancel' onClick={() => (isLoading ? undefined : setIsConfirm(false))}>
+                        Cancel
+                    </Button>,
+                    <Button key='submit' type='primary' disabled={isLoading} loading={isLoading} onClick={handleUpdate}>
+                        Ok
+                    </Button>
+                ]}
+            >
                 <Typography>Do you want to change this information?</Typography>
             </Modal>
         </>

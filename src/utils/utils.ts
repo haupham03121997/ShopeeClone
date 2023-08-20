@@ -1,6 +1,8 @@
 import { isAxiosError, AxiosError, HttpStatusCode } from 'axios'
 import dayjs, { Dayjs } from 'dayjs'
 import { FORMAT_DATE } from 'src/constants/app'
+import { config } from 'src/constants/config'
+import UserDefault from 'src/assets/images/user-default.avif'
 
 // error from axios
 export function isAxiosErrorFuncs<T>(errors: unknown): errors is AxiosError<T> {
@@ -45,3 +47,5 @@ export function getIdFromNameId(nameId: string) {
 export function formatDate(date: Dayjs) {
     return dayjs(date).format(FORMAT_DATE)
 }
+
+export const getAvatarURL = (avatarName: string) => (avatarName ? `${config.baseURL}images/${avatarName}` : UserDefault)
