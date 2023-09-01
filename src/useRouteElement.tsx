@@ -1,21 +1,22 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import { PATH } from './constants/path'
 import useAppContext from './hooks/useAppContext'
 import AuthenticationLayout from './layouts/AuthenticationLayout'
 import MainLayout from './layouts/MainLayout'
-import Login from './pages/Login'
-import ProductList from './pages/ProductList'
-import UserProfile from './pages/UserProfile'
-import Register from './pages/Register'
-import ProductDetail from './pages/ProductDetail'
-import SearchProducts from './pages/SearchProducts'
-import Cart from './pages/Cart'
-import AddressInformation from './pages/AddressInformation'
-import PaymentOptions from './pages/PaymentOptions'
 import UserLayout from './layouts/UserLayout'
-import ChangePassword from './pages/ChagePassword'
-import UserAddress from './pages/UserAddress'
+// import Login from './pages/Login'
+const Login = React.lazy(() => import('./pages/Login'))
+const ProductList = React.lazy(() => import('./pages/ProductList'))
+const UserProfile = React.lazy(() => import('./pages/UserProfile'))
+const Register = React.lazy(() => import('./pages/Register'))
+const ProductDetail = React.lazy(() => import('./pages/ProductDetail'))
+const SearchProducts = React.lazy(() => import('./pages/SearchProducts'))
+const Cart = React.lazy(() => import('./pages/Cart'))
+const AddressInformation = React.lazy(() => import('./pages/AddressInformation'))
+const PaymentOptions = React.lazy(() => import('./pages/PaymentOptions'))
+const ChangePassword = React.lazy(() => import('./pages/ChangePassword'))
+const UserAddress = React.lazy(() => import('./pages/UserAddress'))
 
 function ProtectedRoute() {
     const { isAuthenticated } = useAppContext()
@@ -30,7 +31,7 @@ function RejectedRoute() {
 export default function useRouteElement() {
     const routeElements = useRoutes([
         {
-            path: '',
+            path: '/dev/clone',
             element: <ProtectedRoute />,
             children: [
                 {
@@ -41,7 +42,9 @@ export default function useRouteElement() {
                             path: PATH.CART,
                             element: (
                                 <MainLayout>
-                                    <Cart />
+                                    <Suspense>
+                                        <Cart />
+                                    </Suspense>
                                 </MainLayout>
                             )
                         }
@@ -55,7 +58,9 @@ export default function useRouteElement() {
                             path: PATH.ADDRESS_INFORMATION,
                             element: (
                                 <MainLayout>
-                                    <AddressInformation />
+                                    <Suspense>
+                                        <AddressInformation />
+                                    </Suspense>
                                 </MainLayout>
                             )
                         }
@@ -69,7 +74,9 @@ export default function useRouteElement() {
                             path: PATH.PAYMENT_OPTIONS,
                             element: (
                                 <MainLayout>
-                                    <PaymentOptions />
+                                    <Suspense>
+                                        <PaymentOptions />
+                                    </Suspense>
                                 </MainLayout>
                             )
                         }
@@ -79,7 +86,10 @@ export default function useRouteElement() {
                     path: PATH.USER,
                     element: (
                         <MainLayout typeNav='nav-user'>
-                            <UserLayout />
+                            <Suspense>
+                                {' '}
+                                <UserLayout />
+                            </Suspense>
                         </MainLayout>
                     ),
                     children: [
@@ -107,7 +117,9 @@ export default function useRouteElement() {
                     path: PATH.LOGIN,
                     element: (
                         <AuthenticationLayout>
-                            <Login />
+                            <Suspense>
+                                <Login />
+                            </Suspense>
                         </AuthenticationLayout>
                     )
                 },
@@ -126,7 +138,10 @@ export default function useRouteElement() {
             index: true,
             element: (
                 <MainLayout>
-                    <ProductList />
+                    <Suspense>
+                        {' '}
+                        <ProductList />
+                    </Suspense>
                 </MainLayout>
             )
         },
@@ -135,7 +150,9 @@ export default function useRouteElement() {
             index: true,
             element: (
                 <MainLayout>
-                    <ProductDetail />
+                    <Suspense>
+                        <ProductDetail />
+                    </Suspense>
                 </MainLayout>
             )
         },
@@ -144,7 +161,9 @@ export default function useRouteElement() {
             index: true,
             element: (
                 <MainLayout>
-                    <SearchProducts />
+                    <Suspense>
+                        <SearchProducts />
+                    </Suspense>
                 </MainLayout>
             )
         }

@@ -13,6 +13,16 @@ export function isAxiosErrorUnprocessableEntity<T>(errors: unknown): errors is A
     return isAxiosError(errors) && errors.response?.status === HttpStatusCode.UnprocessableEntity
 }
 
+export function isAxiosErrorUnauthorizedEntity<T>(errors: unknown): errors is AxiosError<T> {
+    return isAxiosError(errors) && errors.response?.status === HttpStatusCode.Unauthorized
+}
+export function isAxiosExpiredTokenError<T>(errors: unknown): errors is AxiosError<T> {
+    return (
+        isAxiosErrorUnauthorizedEntity(errors) &&
+        ((errors.response?.data as any)?.data?.name as string) === 'EXPIRED_TOKEN'
+    )
+}
+
 export function formatCurrency(currency: number) {
     return new Intl.NumberFormat('de-DE').format(currency)
 }

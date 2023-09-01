@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+// eslint-disable-next-line import/no-unresolved
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 
@@ -6,9 +7,16 @@ import * as path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), visualizer()],
+    // plugins: [react(), visualizer()] as any,
+    plugins: [react({ fastRefresh: false }) as any],
+    worker: {
+        plugins: [react() as any]
+    },
     server: {
         port: 3000
+    },
+    test: {
+        environment: 'jsdom' // or 'jsdom', 'node'
     },
     css: {
         preprocessorOptions: {
@@ -21,6 +29,7 @@ export default defineConfig({
     optimizeDeps: {
         include: ['tailwind.config.js']
     },
+    base: '/dev/clone',
     resolve: {
         alias: {
             src: path.resolve(__dirname, './src')

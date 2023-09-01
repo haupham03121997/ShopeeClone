@@ -26,6 +26,7 @@ const Product: FC<Props> = ({ product }): JSX.Element => {
                                 src={image}
                                 className='scale-1 h-full w-full cursor-pointer object-cover transition-all  duration-500 hover:scale-110'
                                 alt=''
+                                loading='lazy'
                             />
                         </div>
                     ))}
